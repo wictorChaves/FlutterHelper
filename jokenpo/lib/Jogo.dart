@@ -9,6 +9,7 @@ class Jogo{
   ];
 
   bool EhVencedor(String suaOpcao, String appOpcao){
+    if(appOpcao == suaOpcao) return null;
     return (GetNextOpcao(appOpcao) == suaOpcao);
   }
 

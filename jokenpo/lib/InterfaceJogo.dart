@@ -22,12 +22,17 @@ class _InterfaceJogoState extends State<InterfaceJogo> {
       var ehVencedor = jogo.EhVencedor(opcao, appOpcao);
       setState(() {
         _imagemApp = AssetImage("images/$appOpcao.png");
-        _msgStyle = ehVencedor
-            ? TextStyle(fontSize: 25, color: Colors.green)
-            : TextStyle(fontSize: 25, color: Colors.red);
-        _msg = ehVencedor
-            ? "Você ganhou!"
-            : "Você perdeu :(";
+        var color = Colors.black;
+        if(ehVencedor == null){
+          _msg = "Empatamos!";
+        }else if(ehVencedor){
+          _msg = "Você ganhou!";
+          color = Colors.green;
+        }else{
+          _msg = "Você perdeu :(";
+          color = Colors.red;
+        }
+        _msgStyle = TextStyle(fontSize: 25, color: color);
       });
     }
 
