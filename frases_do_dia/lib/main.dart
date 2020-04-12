@@ -11,13 +11,8 @@ void main(){
           color: Colors.white
         )
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Text("T1"),
-          Text("T2"),
-          Text("T3"),
-        ]
+      child: Image.asset(
+        "images/teste.png"
       ),
     ),
   ));
