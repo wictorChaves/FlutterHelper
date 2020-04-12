@@ -5,6 +5,7 @@ void main(){
     title: "Frases do dia",
     home: Container(
       //color: Colors.white,
+      padding: EdgeInsets.all(30),
       decoration: BoxDecoration(
         border: Border.all(
           width: 3,
