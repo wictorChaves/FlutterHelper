@@ -45,7 +45,7 @@ flutter:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   assets:
-    - images/pedra.png
+    - images/padrao.png
     - images/papel.png
     - images/pedra.png
     - images/tesoura.png
