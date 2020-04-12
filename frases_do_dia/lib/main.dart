@@ -1,65 +1,53 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
-void main(){
+void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: HomeStateFul(),
+    home: Home(),
   ));
 }
 
-class HomeStateFul extends StatefulWidget {
+class Home extends StatefulWidget {
   @override
-  _HomeStateFulState createState() => _HomeStateFulState();
+  _HomeState createState() => _HomeState();
 }
 
-class _HomeStateFulState extends State<HomeStateFul> {
-
-  var _texto = "Wictor de Oliveira";
+class _HomeState extends State<Home> {
+  var _frase = [
+    "1 - Gratidão não é pagamento, mas um reconhecimento que se demonstra no dia a dia.",
+    "2 - Gratidão não é pagamento, mas um reconhecimento que se demonstra no dia a dia.",
+    "3 - Gratidão não é pagamento, mas um reconhecimento que se demonstra no dia a dia."
+  ];
+  var _index = 0;
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Frases do dia"),
-        backgroundColor: Colors.green,
-      ),
+      appBar: AppBar(title: Text("Frases do dia")),
       body: Container(
+        padding: EdgeInsets.all(20),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            Image.asset("images/logo.png"),
+            Text(_frase[_index], textAlign: TextAlign.justify),
             RaisedButton(
-              onPressed: (){
+              onPressed: () {
                 setState(() {
-                  _texto = "Curso Flutter";
+                  _index = Random().nextInt(3);
                 });
               },
-              color: Colors.amber,
-              child: Text("Clique aqui"),
-            ),
-            Text("Nome: $_texto")
+              child: Text(
+                "Nova frase",
+                style: TextStyle(color: Colors.white),
+              ),
+              color: Colors.green,
+            )
           ],
         ),
-      )
-    );
-
-  }
-}
-
-
-class Home extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-
-    var _titulo = "Frases do dia";
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_titulo),
-        backgroundColor: Colors.green,
       ),
-      body: Text("Conteúdo"),
-      bottomNavigationBar: BottomAppBar(),
     );
-
   }
 }
