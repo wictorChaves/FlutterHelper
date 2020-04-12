@@ -7,7 +7,20 @@ void main(){
       color: Colors.white,
       child: Column(
         children: [
-          Text("Este é um exemplo de um texto mais longo!")
+          Text(
+              "Este é um exemplo de um texto mais longo!",
+              style: TextStyle(
+                fontSize: 35,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 10,
+                wordSpacing: 20,
+                decoration: TextDecoration.lineThrough,
+                decorationColor: Colors.greenAccent,
+                color: Colors.black,
+                decorationStyle: TextDecorationStyle.solid
+              ),
+          ),
         ],
       ),
     ),
