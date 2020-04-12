@@ -6,6 +6,7 @@ void main(){
     home: Container(
       //color: Colors.white,
       padding: EdgeInsets.fromLTRB(30, 30, 30, 30),
+      margin: EdgeInsets.fromLTRB(30, 30, 30, 30),
       decoration: BoxDecoration(
         border: Border.all(
           width: 3,
