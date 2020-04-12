@@ -25,7 +25,10 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Frases do dia")),
+      appBar: AppBar(
+        title: Text("Frases do dia"),
+        backgroundColor: Colors.green,
+      ),
       body: Container(
         padding: EdgeInsets.all(20),
         child: Column(
