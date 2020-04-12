@@ -4,24 +4,20 @@ void main(){
   runApp(MaterialApp(
     title: "Frases do dia",
     home: Container(
-      //color: Colors.white,
-      padding: EdgeInsets.fromLTRB(30, 30, 30, 30),
-      margin: EdgeInsets.fromLTRB(30, 30, 30, 30),
+      margin: EdgeInsets.only(top: 40),
       decoration: BoxDecoration(
         border: Border.all(
           width: 3,
-          color: Colors.red
+          color: Colors.white
         )
       ),
-      child: Column(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text("T1"),
-          Padding(
-            child: Text("T2"),
-            padding: EdgeInsets.all(20),
-          ),
+          Text("T2"),
           Text("T3"),
-        ],
+        ]
       ),
     ),
   ));
