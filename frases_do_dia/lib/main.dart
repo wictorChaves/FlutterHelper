@@ -7,19 +7,16 @@ void main(){
       color: Colors.white,
       child: Column(
         children: [
-          Text(
-              "Este é um exemplo de um texto mais longo!",
+          FlatButton(
+            onPressed: null,
+            child: Text(
+              "Botão",
               style: TextStyle(
-                fontSize: 35,
-                fontStyle: FontStyle.italic,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 10,
-                wordSpacing: 20,
-                decoration: TextDecoration.lineThrough,
-                decorationColor: Colors.greenAccent,
+                fontSize: 20,
                 color: Colors.black,
-                decorationStyle: TextDecorationStyle.solid
+                decoration: TextDecoration.none
               ),
+            ),
           ),
         ],
       ),
