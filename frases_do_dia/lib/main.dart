@@ -15,10 +15,12 @@ void main(){
       ),
       child: Column(
         children: [
-          Text(
-              "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
-              textAlign: TextAlign.justify,
+          Text("T1"),
+          Padding(
+            child: Text("T2"),
+            padding: EdgeInsets.all(20),
           ),
+          Text("T3"),
         ],
       ),
     ),
