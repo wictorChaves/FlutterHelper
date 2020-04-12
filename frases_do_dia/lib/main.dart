@@ -4,8 +4,12 @@ void main(){
   runApp(MaterialApp(
     title: "Frases do dia",
     home: Row(children:[
-      Text("T 1"),
-      Text("T 2")
+      Text(
+          "Texto",
+          style: TextStyle(
+            fontSize: 25
+          ),
+      )
     ],),
   ));
 }
