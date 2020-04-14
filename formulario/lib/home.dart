@@ -80,8 +80,8 @@ class _HomeState extends State<Home> {
                 max: 10,
                 divisions: 10,
                 label: _sliderLavel,
-                activeColor: Colors.red,
-                inactiveColor: Colors.blue,
+                activeColor: Colors.blue,
+                inactiveColor: Colors.blueGrey,
                 onChanged: (value) {
                   setState(() {
                     _slider = value;
