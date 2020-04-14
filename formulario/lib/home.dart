@@ -12,9 +12,10 @@ class _HomeState extends State<Home> {
   bool _checkbox2 = false;
   int _radio1 = 1;
   String _radio2 = "masculino";
-
   bool _switch1 = false;
   bool _switch2 = false;
+  double _slider = 5;
+  String _sliderLavel = "5";
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +71,21 @@ class _HomeState extends State<Home> {
                 onChanged: (value) {
                   setState(() {
                     _radio2 = "feminino";
+                  });
+                },
+              ),
+              Slider(
+                value: _slider,
+                min: 0,
+                max: 10,
+                divisions: 10,
+                label: _sliderLavel,
+                activeColor: Colors.red,
+                inactiveColor: Colors.blue,
+                onChanged: (value) {
+                  setState(() {
+                    _slider = value;
+                    _sliderLavel = value.toString();
                   });
                 },
               ),
