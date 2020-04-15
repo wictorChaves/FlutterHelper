@@ -1,4 +1,6 @@
-# caracoroa
+<img src="docs/screenshot.png" alt="screenshot" width="250" align="right">
+
+# Cara ou Coroa
 
 Aplicativo para jogar cara ou coroa.
 
