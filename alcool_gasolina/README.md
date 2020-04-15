@@ -1,3 +1,5 @@
+<img src="docs/screenshot.png" alt="screenshot" width="250" align="right">
+
 # alcoolgasolina
 
 Aplicação para verificar se é melhor escolher alcool ou gasolina.
