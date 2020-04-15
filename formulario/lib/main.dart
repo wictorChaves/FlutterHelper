@@ -4,6 +4,7 @@ import 'home.dart';
 
 main(){
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     title: "Formulário",
     home: Home(),
   ));
