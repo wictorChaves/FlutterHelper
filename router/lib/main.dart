@@ -6,6 +6,7 @@ import 'home.dart';
 
 main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     initialRoute: "/",
     routes: {
       "/home": (context) => Home(),

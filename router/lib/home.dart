@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -11,20 +12,28 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(title: Text("Home")),
       body: Container(
+        padding: EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             RaisedButton(
-              child: Text("Contact"),
-              onPressed: (){
-                Navigator.pushNamed(context, "/contact");
-              }
-            ),
+                color: Colors.blue,
+                child: Text(
+                  "Contact",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, "/contact");
+                }),
             RaisedButton(
-              child: Text("Services"),
-              onPressed: (){
-                Navigator.pushNamed(context, "/services");
-              }
-            )
+                color: Colors.blue,
+                child: Text(
+                  "Services",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, "/services");
+                })
           ],
         ),
       ),
