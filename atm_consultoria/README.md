@@ -1,6 +1,6 @@
 <img src="docs/screenshot.png" alt="screenshot" width="250" align="right">
 
-# Atm Consultoria
+# ATM Consultoria
 
 Projeto de apresentação de uma emprega.
 
