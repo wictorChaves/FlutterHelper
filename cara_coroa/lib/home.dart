@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
             child: Image.asset("images/botao_jogar.png"),
             onTap: (){
               Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => ShowCoin(Random().nextInt(2))
+                  builder: (context) => ShowCoin((Random().nextInt(2) == 0) ? "images/moeda_cara.png" : "images/moeda_coroa.png")
               ));
             },
           )
