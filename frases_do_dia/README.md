@@ -1,4 +1,6 @@
-# frasesdodia
+<img src="docs/screenshot.png" alt="screenshot" width="250" align="right">
+
+# Frases do dia
 
 Projeto frases do dia
 
