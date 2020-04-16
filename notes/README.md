@@ -1,6 +1,6 @@
 <img src="docs/screenshot.png" alt="screenshot" width="250" align="right">
 
-# notes
+# Bloco de notas
 
 Aplicativo de notas consumindo um web service
 
