@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:youtube/screens/home.dart';
+import 'package:youtube/screens/home_page.dart';
 import 'package:youtube/screens/library.dart';
 import 'package:youtube/screens/subscriptions.dart';
 import 'package:youtube/screens/trending.dart';
@@ -41,7 +41,10 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: _screens[_currentIndex],
+      body: Container(
+        padding: EdgeInsets.all(16),
+        child: _screens[_currentIndex],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
