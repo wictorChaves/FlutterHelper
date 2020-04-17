@@ -2,8 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube/model/video.dart';
 import 'package:youtube/services/youtube_service.dart';
+import 'package:flutter_youtube/flutter_youtube.dart';
+
+import '../config.dart';
 
 class HomePage extends StatefulWidget {
+  String _search;
+
+  HomePage(this._search);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -26,24 +33,33 @@ class _HomePageState extends State<HomePage> {
       itemCount: snapshot.data.length);
 
   Widget _itemList(Video video) {
-    return Column(children: [
-      Container(
-        height: 200,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                fit: BoxFit.cover, image: NetworkImage(video.image))),
-      ),
-      ListTile(
-        title: Text(video.title),
-        subtitle: Text(video.channelTitle),
-      )
-    ]);
+    return GestureDetector(
+      onTap: () {
+        FlutterYoutube.playYoutubeVideoById(
+            apiKey: YOUTUBE_API_KEY,
+            videoId: video.id,
+            autoPlay: true,
+            fullScreen: true);
+      },
+      child: Column(children: [
+        Container(
+          height: 200,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.cover, image: NetworkImage(video.image))),
+        ),
+        ListTile(
+          title: Text(video.title),
+          subtitle: Text(video.channelTitle),
+        )
+      ]),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Video>>(
-      future: _youtubeService.search(""),
+      future: _youtubeService.search(widget._search),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
