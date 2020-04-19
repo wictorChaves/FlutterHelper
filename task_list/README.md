@@ -1,4 +1,6 @@
-# tasklist
+<img src="docs/screenshot.png" alt="screenshot" width="250" align="right">
+
+# Lista de tarefas
 
 Aplicação de lista de tarefas.
 
