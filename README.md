@@ -17,4 +17,5 @@ Pequenos projetos para ajudar no desenvolvimento.
  - [Jokenpo](jokenpo)
  - [Bloco de notas](notes)
  - [Rotas](router)
+ - [Lista de tarefas](task_list)
  - [Youtube](youtube)
