@@ -73,7 +73,6 @@ class _HomeState extends State<Home> {
   @override
   Future<void> initState() {
     super.initState();
-    print("Resultado: initState");
     _taskService.GetAll().then((taskList) => _taskList = taskList);
   }
 
