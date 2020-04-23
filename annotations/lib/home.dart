@@ -79,11 +79,11 @@ class _HomeState extends State<Home> {
               title: Text(title),
               content: Column(mainAxisSize: MainAxisSize.min, children: [
                 TextField(
-                    decoration: InputDecoration(labelText: "Titulo"),
+                    decoration: InputDecoration(labelText: "Titulo", hintText: "Digite o título"),
                     onChanged: (text) {},
                     controller: _titleController),
                 TextField(
-                    decoration: InputDecoration(labelText: "Descrição"),
+                    decoration: InputDecoration(labelText: "Descrição", hintText: "Digite a Descrição"),
                     onChanged: (text) {},
                     controller: _contentController)
               ]),
