@@ -14,7 +14,8 @@ class MainService {
   Future<List<Annotation>> GetAll() async {
     return await _databaseService.Transaction<List<Annotation>>(
         (DatabaseExecutor txn) async {
-      List<Map> mapList = await txn.rawQuery("SELECT * FROM " + _dataBaseName + " ORDER BY update_datetime DESC");
+      List<Map> mapList = await txn.rawQuery(
+          "SELECT * FROM " + _dataBaseName + " ORDER BY update_datetime DESC");
       return List<Annotation>.of(mapList.map((item) {
         return Annotation.fromJson(item);
       }));
@@ -41,7 +42,8 @@ class MainService {
   Future<int> Update(Annotation annotation) async {
     return await _databaseService.Transaction<int>(
         (DatabaseExecutor txn) async {
-      return await txn.update(_dataBaseName, annotation.toJson());
+      return await txn.update(_dataBaseName, annotation.toJson(),
+          where: "id = ?", whereArgs: [annotation.id]);
     });
   }
 
