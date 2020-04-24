@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class DatetimeHelper {
   DateTime _datetime;
@@ -10,8 +11,15 @@ class DatetimeHelper {
     return formatter.format(_datetime);
   }
 
+  String ToDateString() {
+    var formatter = DateFormat.yMd();
+    return formatter.format(_datetime);
+  }
+
   String ToBRDateString() {
-    return ToString("dd/MM/yyyy");
+    initializeDateFormatting('pt_BR', null);
+    var formatter = DateFormat.yMd('pt_BR');
+    return formatter.format(_datetime);
   }
 
 }
