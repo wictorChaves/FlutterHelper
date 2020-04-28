@@ -19,6 +19,7 @@ Pequenos projetos para ajudar no desenvolvimento.
  - [Aprenda Inglês](learning_english)
  - [Mini Player](mini_player)
  - [Bloco de notas](notes)
+ - [Player de vídeo](play_video)
  - [Rotas](router)
  - [Lista de tarefas](task_list)
  - [Youtube](youtube)
