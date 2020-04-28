@@ -1,4 +1,6 @@
-# playvideo
+<img src="docs/screenshot.png" alt="screenshot" width="250" align="right">
+
+# Player de vídeo
 
 Aplicação para executar um vídeo.
 
