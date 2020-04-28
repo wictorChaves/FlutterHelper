@@ -16,6 +16,7 @@ Pequenos projetos para ajudar no desenvolvimento.
  - [Formulário](formulario)
  - [Frases do dia](frases_do_dia)
  - [Jokenpo](jokenpo)
+ - [Aprenda Inglês](learning_english)
  - [Mini Player](mini_player)
  - [Bloco de notas](notes)
  - [Rotas](router)
