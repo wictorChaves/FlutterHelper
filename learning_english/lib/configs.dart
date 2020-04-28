@@ -1,0 +1,1 @@
+String APP_TITLE = "Aprenda inglês";
