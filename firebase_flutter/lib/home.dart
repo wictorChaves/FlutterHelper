@@ -16,6 +16,7 @@ class _HomeState extends State<Home> {
   _HomeState() {}
 
   File _image;
+  String _statusUpload = "Upload Imagem";
 
   _getCameraImage() async {
     File image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -31,8 +32,23 @@ class _HomeState extends State<Home> {
     FirebaseStorage storage = FirebaseStorage.instance;
     StorageReference rootPath = storage.ref();
     StorageReference file = rootPath.child("images").child("foto1.png");
-    file.putFile(_image);
+    StorageUploadTask storageUploadTask = file.putFile(_image);
+    storageUploadTask.events.listen((StorageTaskEvent storageEvent) {
+      if (storageEvent.type == StorageTaskEventType.progress) {
+        setState(() => _statusUpload = "Upload...");
+      } else if (storageEvent.type == StorageTaskEventType.success) {
+        setState(() => _statusUpload = "Completo");
+      } else if (storageEvent.type == StorageTaskEventType.failure) {
+        setState(() => _statusUpload = "Erro");
+      }
+    });
+
+    storageUploadTask.onComplete.then((StorageTaskSnapshot snapshot) async {
+      String url = await snapshot.ref.getDownloadURL();
+    });
   }
+
+  _downloadImage() {}
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +76,8 @@ class _HomeState extends State<Home> {
                       : RaisedButton.icon(
                           onPressed: _uploadImage,
                           icon: Icon(Icons.cloud_upload),
-                          label: Text("Upload Imagem"),
-                        ),
+                          label: Text(_statusUpload),
+                        )
                 ]))));
   }
 }
