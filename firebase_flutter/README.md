@@ -16,7 +16,7 @@ Aplicação utilizando firebase.
  - [Cloud Firestore](https://pub.dev/packages/cloud_firestore)
  - [Firebase Cloud Storage](https://pub.dev/packages/firebase_storage)
  - [Firebase Authentication](https://pub.dev/packages/firebase_auth)
-
+ - [Image Picker](https://pub.dev/packages/image_picker)
 
 ## Getting Started
 
