@@ -12,6 +12,7 @@ Pequenos projetos para ajudar no desenvolvimento.
  - [Anotações](annotations)
  - [ATM Consultoria](atm_consultoria)
  - [Cara ou Coroa](cara_coroa)
+ - [Firebase Flutter](firebase_flutter)
  - [Preço do Bitcoin](bitcoin_price)
  - [Formulário](formulario)
  - [Frases do dia](frases_do_dia)
