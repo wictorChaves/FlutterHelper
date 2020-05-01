@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp/register.dart';
+import 'package:whatsapp/screens/register/register.dart';
 import 'package:whatsapp/theme/component_helper.dart';
 
 class Login extends StatefulWidget {

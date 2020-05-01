@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp/register.dart';
+import 'package:whatsapp/screens/register/register.dart';
 
 import 'configs/app_config.dart';
-import 'home.dart';
-import 'login.dart';
+import 'screens/home/home.dart';
+import 'screens/login/login.dart';
 
 void main() => runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    theme: ThemeData(
-        primaryColor: Color(0xff075E54), accentColor: Color(0xff25D366)),
+    theme: ThemeData(primaryColor: PRIMARY_COLOR, accentColor: ACCENT_COLOR),
     title: APP_TITLE,
     home: Register()));
