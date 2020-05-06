@@ -1,6 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
+
+  AuthService._constructor();
+
+  static final AuthService _instance = AuthService._constructor();
+
+  factory AuthService() {
+    return _instance;
+  }
+
   FirebaseAuth auth = FirebaseAuth.instance;
 
   Future<AuthResult> Create(String email, String password) =>
@@ -15,5 +24,5 @@ class AuthService {
 
   Future<bool> IsLogged() async => (await auth.currentUser()) != null;
 
-  Future<FirebaseUser> Logout() => auth.signOut();
+  Future<void> Logout() => auth.signOut();
 }

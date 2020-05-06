@@ -1,7 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:whatsapp/services/model/user_model.dart';
 
-import 'firestore_service.dart';
+import 'model/base_service.dart';
 
-class UserService extends FirestoreService {
-  UserService() : super("usuarios");
+class UserService extends BaseService<UserModel> {
+  UserService._constructor() : super("usuarios");
+
+  static final UserService _instance = UserService._constructor();
+
+  factory UserService() {
+    return _instance;
+  }
 }
