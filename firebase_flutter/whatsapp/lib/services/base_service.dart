@@ -1,10 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whatsapp/services/model/imodel.dart';
 
-import '../firestore_service.dart';
+import 'firestore_service.dart';
 
 class BaseService<T extends IModel> extends FirestoreService {
-  BaseService(String path) : super(path);
+  Function(Map<String, dynamic> json) _newInstance;
+
+  BaseService(String path, Function(Map<String, dynamic> json) newInstance)
+      : super(path) {
+    _newInstance = newInstance;
+  }
 
   @override
   Future<List<T>> GetAll() async {
@@ -19,15 +24,18 @@ class BaseService<T extends IModel> extends FirestoreService {
   Future<String> Create(T model) async =>
       (await CreateDocument(model.toJson())).documentID;
 
-  Future<String> CreateOrUpdate(T model) => model.uid == null
+  Future<dynamic> CreateOrUpdate(T model) => model.uid == null
       ? Create(model)
       : CreateOrUpdateDocument(model.uid, model.toJson());
+
+  Future<dynamic> UpdateProperty(T model, Map<String, dynamic> json) =>
+      UpdatePropertyDocument(model.uid, json);
 
   Future<void> Delete(String id) => DeleteDocument(id);
 
   T _fromJson(DocumentSnapshot snapshot) {
     var newItem = snapshot.data;
     newItem["uid"] = snapshot.documentID;
-    return T.fromJson(newItem);
+    return _newInstance(newItem);
   }
 }

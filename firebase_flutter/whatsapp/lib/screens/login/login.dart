@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:whatsapp/global/main_global.dart';
 import 'package:whatsapp/helper/dialog_helper.dart';
 import 'package:whatsapp/screens/login/viewmodel/user_view_model.dart';
 import 'package:whatsapp/screens/register/validate/register_validate.dart';
 import 'package:whatsapp/services/auth_service.dart';
+import 'package:whatsapp/services/model/user_model.dart';
+import 'package:whatsapp/services/user_service.dart';
 import 'package:whatsapp/theme/component_helper.dart';
 
 class Login extends StatefulWidget {
@@ -15,6 +18,7 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   RegisterValidate _validation;
   AuthService _authService;
+  UserService _userService;
 
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -22,6 +26,7 @@ class _LoginState extends State<Login> {
   _LoginState() {
     _validation = RegisterValidate();
     _authService = AuthService();
+    _userService = UserService();
   }
 
   _btnLogin() {
@@ -35,8 +40,7 @@ class _LoginState extends State<Login> {
 
   _login(UserViewModel viewModel) {
     _authService.Login(viewModel.email, viewModel.password)
-        .then((AuthResult authResult) =>
-            Navigator.pushReplacementNamed(context, "/home"))
+        .then((AuthResult authResult) => _saveUser(authResult.user))
         .catchError((erro) => DialogHelper.simple(context, "Erro!",
             "Erro ao tentar entrar, verifica seu e-mail e a sua senha!"));
   }
@@ -46,8 +50,14 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    _authService.IsLogged().then((logged) =>
-        {if (logged) Navigator.pushReplacementNamed(context, "/home")});
+    _authService.GetCurrentUser().then(_saveUser);
+  }
+
+  _saveUser(FirebaseUser user) async {
+    print(user);
+    if (user == null) return;
+    MainGlobal.userModel = await _userService.GetById(user.uid);
+    Navigator.pushReplacementNamed(context, "/home");
   }
 
   @override
@@ -65,11 +75,8 @@ class _LoginState extends State<Login> {
                             children: [
                               Padding(
                                   padding: EdgeInsets.only(bottom: 32),
-                                  child: Image.asset(
-                                    "assets/images/logo.png",
-                                    width: 200,
-                                    height: 150,
-                                  )),
+                                  child: Image.asset("assets/images/logo.png",
+                                      width: 200, height: 150)),
                               Padding(
                                   padding: EdgeInsets.only(bottom: 8),
                                   child: ComponentHelper.InputFieldCircular(
