@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp/screens/chat/chat.dart';
 import 'package:whatsapp/screens/configs/configs.dart';
 import 'package:whatsapp/screens/home/home.dart';
 import 'package:whatsapp/screens/login/login.dart';
@@ -17,6 +18,8 @@ class GenerateRoute {
         return MaterialPageRoute(builder: (_) => Home());
       case "/configs":
         return MaterialPageRoute(builder: (_) => Configs());
+      case "/chat":
+        return MaterialPageRoute(builder: (_) => Chat(settings.arguments));
       default:
         _errorRoute();
     }

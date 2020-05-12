@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 class ComponentHelper {
   static Widget InputFieldCircular(String text, TextInputType textInputType,
       {bool autofocus = false,
-      TextEditingController controller = null,
-      bool obscure = false,
-      FormFieldValidator<String> validator}) {
+        TextEditingController controller = null,
+        bool obscure = false,
+        FormFieldValidator<String> validator,
+        Widget prefixIcon,
+        contentPadding
+      }) {
     return TextFormField(
       autofocus: autofocus,
       obscureText: obscure,
@@ -14,11 +17,13 @@ class ComponentHelper {
       controller: controller,
       validator: validator,
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(32, 16, 32, 16),
+          contentPadding: (contentPadding == null) ? EdgeInsets.fromLTRB(32, 16, 32, 16) : contentPadding,
           hintText: text,
           filled: true,
           fillColor: Colors.white,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(32))),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)),
+          prefixIcon: prefixIcon
+      ),
     );
   }
 

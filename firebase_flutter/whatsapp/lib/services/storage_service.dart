@@ -15,4 +15,10 @@ class StorageService {
     StorageReference file = _storage.ref().child(_path).child(name);
     return file.putFile(image);
   }
+
+  StorageUploadTask SetFileInFolder(File image, String name, String folder) {
+    StorageReference file =
+        _storage.ref().child(_path).child(folder).child(name);
+    return file.putFile(image);
+  }
 }

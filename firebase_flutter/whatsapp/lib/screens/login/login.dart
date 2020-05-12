@@ -54,7 +54,6 @@ class _LoginState extends State<Login> {
   }
 
   _saveUser(FirebaseUser user) async {
-    print(user);
     if (user == null) return;
     MainGlobal.userModel = await _userService.GetById(user.uid);
     Navigator.pushReplacementNamed(context, "/home");

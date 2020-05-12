@@ -57,6 +57,8 @@ flutter:
     - assets/images/contacts/perfil3.jpg
     - assets/images/contacts/perfil4.jpg
     - assets/images/contacts/perfil5.jpg
+    - assets/images/contacts/no-img.png
+    - assets/images/bg.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:whatsapp/helper/debugger.dart';
 import 'package:whatsapp/services/model/imodel.dart';
 
 import 'firestore_service.dart';
@@ -14,7 +15,7 @@ class BaseService<T extends IModel> extends FirestoreService {
   @override
   Future<List<T>> GetAll() async {
     List<DocumentSnapshot> documentSnapshotList = await GetAllDocuments();
-    documentSnapshotList.map((item) => _fromJson(item));
+    return documentSnapshotList.map((item) => _fromJson(item)).toList();
   }
 
   Future<T> GetById(String id) async {
@@ -34,7 +35,7 @@ class BaseService<T extends IModel> extends FirestoreService {
   Future<void> Delete(String id) => DeleteDocument(id);
 
   T _fromJson(DocumentSnapshot snapshot) {
-    var newItem = snapshot.data;
+    Map newItem = snapshot.data;
     newItem["uid"] = snapshot.documentID;
     return _newInstance(newItem);
   }

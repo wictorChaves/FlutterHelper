@@ -7,8 +7,8 @@ class FirestoreService {
     collection = Firestore.instance.collection(path);
   }
 
-  Stream<QuerySnapshot> ListenAll(String id) {
-    collection.snapshots();
+  Stream<QuerySnapshot> ListenAll() {
+    return collection.snapshots();
   }
 
   Future<List<DocumentSnapshot>> GetAllDocuments() async =>

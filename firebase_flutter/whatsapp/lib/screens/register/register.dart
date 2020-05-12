@@ -42,14 +42,17 @@ class _RegisterState extends State<Register> {
 
   _register(UserViewModel viewModel) {
     _authService.Create(viewModel.email, viewModel.password)
-        .then((AuthResult authResult) => _afterRegister(viewModel))
+        .then((AuthResult authResult) => _afterRegister(authResult, viewModel))
         .catchError((erro) =>
             DialogHelper.simple(context, "Erro!", "Erro ao tentar cadastrar!"));
   }
 
-  _afterRegister(UserViewModel viewModel) {
-    UserModel model =
-        UserModel.fromJson({"name": viewModel.name, "email": viewModel.email});
+  _afterRegister(AuthResult authResult, UserViewModel viewModel) {
+    UserModel model = UserModel.fromJson({
+      "uid": authResult.user.uid,
+      "name": viewModel.name,
+      "email": viewModel.email
+    });
     _userService.CreateOrUpdate(model);
     Navigator.pushNamedAndRemoveUntil(context, "/home", (_) => false);
   }

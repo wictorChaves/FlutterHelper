@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:whatsapp/helper/dialog_helper.dart';
 import 'package:whatsapp/screens/home/tabs/tab_base.dart';
-import 'package:whatsapp/screens/login/login.dart';
 import 'package:whatsapp/services/auth_service.dart';
 
 import 'tabs/contact/contact.dart';
@@ -47,6 +46,15 @@ class _HomeState extends State<Home> {
         print(choice);
     }
   }
+
+  @override
+  void initState() {
+    super.initState();
+    _authService.GetCurrentUser().then(_saveUser);
+  }
+
+  _saveUser(FirebaseUser user) async =>
+      (user == null) ? Navigator.pushReplacementNamed(context, "/home") : null;
 
   @override
   Widget build(BuildContext context) {
