@@ -22,5 +22,5 @@ class MainTheme {
   static double get elevation => isIOS() ? 0 : _elevation;
   static Color get indicatorColor => _indicatorColor;
 
-  static bool isIOS() => !Platform.isIOS;
+  static bool isIOS() => Platform.isIOS;
 }
