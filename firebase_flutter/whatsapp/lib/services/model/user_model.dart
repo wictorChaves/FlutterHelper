@@ -12,7 +12,7 @@ class UserModel implements IModel {
 
   @override
   Map<String, dynamic> toJson() =>
-      {"name": _name, "email": _email, "urlImage": _urlImage};
+      {"uid": uid, "name": _name, "email": _email, "urlImage": _urlImage};
 
   @override
   UserModel.fromJson(Map<String, dynamic> json) {

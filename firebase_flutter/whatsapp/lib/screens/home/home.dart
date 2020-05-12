@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:whatsapp/global/main_theme.dart';
 import 'package:whatsapp/helper/dialog_helper.dart';
 import 'package:whatsapp/screens/home/tabs/tab_base.dart';
 import 'package:whatsapp/services/auth_service.dart';
@@ -63,11 +64,12 @@ class _HomeState extends State<Home> {
         child: Scaffold(
             appBar: AppBar(
                 title: Text("Whatsapp"),
+                elevation: MainTheme.elevation,
                 bottom: TabBar(
                     indicatorWeight: 4,
                     labelStyle:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    indicatorColor: Colors.white,
+                    indicatorColor: MainTheme.indicatorColor,
                     tabs: _tabs.map((item) => Tab(text: item.Title)).toList()),
                 actions: [
                   PopupMenuButton<String>(

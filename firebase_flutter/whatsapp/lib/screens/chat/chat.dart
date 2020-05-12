@@ -4,12 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:whatsapp/configs/app_config.dart';
 import 'package:whatsapp/global/main_global.dart';
+import 'package:whatsapp/global/main_theme.dart';
+import 'package:whatsapp/global/theme_widge.dart';
 import 'package:whatsapp/helper/widget_helper.dart';
 import 'package:whatsapp/services/conversation_service.dart';
 import 'package:whatsapp/services/message_service.dart';
-import 'package:whatsapp/services/model/conversation_model.dart';
 import 'package:whatsapp/services/model/message_model.dart';
 import 'package:whatsapp/services/model/user_model.dart';
 import 'package:whatsapp/services/storage_service.dart';
@@ -47,8 +47,7 @@ class _ChatState extends State<Chat> {
     _messageService.SendMessage(
             widget.userModel.uid, MessageModel.Send(message, "", "text"))
         .then((onValue) {
-      _conversationService.SaveLastConversation(
-          widget.userModel, message);
+      _conversationService.SaveLastConversation(widget.userModel, message);
     });
     _messageController.clear();
   }
@@ -97,16 +96,17 @@ class _ChatState extends State<Chat> {
   Widget _appBar() {
     return AppBar(
         title: Row(children: [
-      Padding(
-          padding: EdgeInsets.only(right: 12),
-          child: CircleAvatar(
-              maxRadius: 20,
-              backgroundColor: Colors.grey,
-              backgroundImage: (widget.userModel.urlImage == null)
-                  ? AssetImage('assets/images/contacts/no-img.png')
-                  : NetworkImage(widget.userModel.urlImage))),
-      Text(widget.userModel.name)
-    ]));
+          Padding(
+              padding: EdgeInsets.only(right: 12),
+              child: CircleAvatar(
+                  maxRadius: 20,
+                  backgroundColor: Colors.grey,
+                  backgroundImage: (widget.userModel.urlImage == null)
+                      ? AssetImage('assets/images/contacts/no-img.png')
+                      : NetworkImage(widget.userModel.urlImage))),
+          Text(widget.userModel.name)
+        ]),
+        elevation: MainTheme.elevation);
   }
 
   Widget _messages() {
@@ -139,11 +139,8 @@ class _ChatState extends State<Chat> {
   }
 
   _listScrollEnd() {
-    _listController.animateTo(
-      _listController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 10),
-      curve: Curves.easeOut,
-    );
+    _listController.animateTo(_listController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 10), curve: Curves.easeOut);
   }
 
   Widget _listMessage(List<MessageModel> messages) {
@@ -160,10 +157,10 @@ class _ChatState extends State<Chat> {
   }
 
   Widget _boxMessgeSent(MessageModel message) =>
-      _boxMessge(message, Alignment.centerRight, MESSAGE_SENT);
+      _boxMessge(message, Alignment.centerRight, MainTheme.messageSentColor);
 
   Widget _boxMessgeReceived(MessageModel message) =>
-      _boxMessge(message, Alignment.centerLeft, MESSAGE_RECEIVED);
+      _boxMessge(message, Alignment.centerLeft, MainTheme.messageReceived);
 
   Widget _boxMessge(MessageModel message, alignment, color) {
     return Align(
@@ -186,24 +183,20 @@ class _ChatState extends State<Chat> {
         padding: EdgeInsets.all(8),
         child: Row(children: [
           Expanded(
-            child: Padding(
-                padding: EdgeInsets.only(right: 8),
-                child: ComponentHelper.InputFieldCircular(
-                    "Digite uma mensagem... ", TextInputType.emailAddress,
-                    controller: _messageController,
-                    autofocus: true,
-                    contentPadding: EdgeInsets.fromLTRB(32, 8, 32, 8),
-                    prefixIcon: _loadUploadImage
-                        ? CircularProgressIndicator()
-                        : IconButton(
-                            icon: Icon(Icons.camera_alt),
-                            onPressed: _sendImage))), //
-          ),
-          FloatingActionButton(
-              backgroundColor: PRIMARY_COLOR,
-              child: Icon(Icons.send, color: Colors.white),
-              mini: true,
-              onPressed: _sendMessage)
+              child: Padding(
+                  padding: EdgeInsets.only(right: 8),
+                  child: ComponentHelper.InputFieldCircular(
+                      "Digite uma mensagem... ", TextInputType.emailAddress,
+                      controller: _messageController,
+                      autofocus: true,
+                      contentPadding: EdgeInsets.fromLTRB(32, 8, 32, 8),
+                      prefixIcon: _loadUploadImage
+                          ? CircularProgressIndicator()
+                          : IconButton(
+                              icon: Icon(Icons.camera_alt),
+                              onPressed: _sendImage))) //
+              ),
+          ThemeWidget.sendButton("Enviar", _sendMessage)
         ]));
   }
 }

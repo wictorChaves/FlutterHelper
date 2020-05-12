@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:whatsapp/global/main_global.dart';
+import 'package:whatsapp/global/main_theme.dart';
 import 'package:whatsapp/helper/dialog_helper.dart';
 import 'package:whatsapp/screens/configs/validate/configs_validate.dart';
 import 'package:whatsapp/services/auth_service.dart';
@@ -76,7 +77,8 @@ class _ConfigsState extends State<Configs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Configurações")),
+        appBar: AppBar(
+            title: Text("Configurações"), elevation: MainTheme.elevation),
         body: Container(
             padding: EdgeInsets.all(20),
             child: Form(

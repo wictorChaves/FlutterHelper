@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:whatsapp/global/main_theme.dart';
 import 'package:whatsapp/helper/dialog_helper.dart';
 import 'package:whatsapp/screens/home/home.dart';
 import 'package:whatsapp/screens/register/validate/register_validate.dart';
@@ -62,7 +63,7 @@ class _RegisterState extends State<Register> {
     return Scaffold(
         appBar: AppBar(title: Text("Cadastro")),
         body: Container(
-            decoration: BoxDecoration(color: PRIMARY_COLOR),
+            decoration: BoxDecoration(color: MainTheme.primaryColor),
             padding: EdgeInsets.all(16),
             child: Center(
                 child: SingleChildScrollView(

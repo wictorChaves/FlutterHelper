@@ -59,17 +59,13 @@ class _ConversationState extends State<Conversation> {
   Widget _noItems() => Container(
       height: 50,
       child: Center(
-        child: Text(
-          "Você não tem nenhum contato.",
-          textAlign: TextAlign.center,
-        ),
-      ));
+          child: Text("Você não tem nenhum contato.",
+              textAlign: TextAlign.center)));
 
   Widget _list(AsyncSnapshot<QuerySnapshot> snapshot) {
-    List<ConversationModel> conversationList =
-        snapshot.data.documents.map((item) {
-      return ConversationModel.fromJson(item.data);
-    }).toList();
+    List<ConversationModel> conversationList = snapshot.data.documents
+        .map((item) => ConversationModel.fromJson(item.data))
+        .toList();
 
     return ListView.separated(
         itemBuilder: (context, index) => _itemList(conversationList[index]),
