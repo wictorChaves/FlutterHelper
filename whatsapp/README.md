@@ -10,6 +10,10 @@ Criando uma aplicação similar ao Whatsapp.
  - [Cloud Firestore](https://pub.dev/packages/cloud_firestore)
  - [Firebase Cloud Storage](https://pub.dev/packages/firebase_storage)
  - [Firebase Authentication](https://pub.dev/packages/firebase_auth)
+ 
+## Tags
+
+Firebase
 
 ## Getting Started
 
