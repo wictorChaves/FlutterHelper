@@ -9,7 +9,7 @@ void main() {
       debugShowCheckedModeBanner: false,
       title: APP_TITLE,
       theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: PRYMARY_COLOR,
           visualDensity: VisualDensity.adaptivePlatformDensity),
       home: SplashScreen()));
 }

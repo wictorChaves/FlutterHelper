@@ -1,1 +1,0 @@
-const APP_TITLE = "Minhas Viagens";

@@ -20,6 +20,7 @@ Pequenos projetos para ajudar no desenvolvimento.
  - [Aprenda Inglês](learning_english)
  - [Mapa e geolocalização](maps_geolocation)
  - [Mini Player](mini_player)
+ - [Minhas viagens](my_travels)
  - [Bloco de notas](notes)
  - [Player de vídeo](play_video)
  - [Rotas](router)

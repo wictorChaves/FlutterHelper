@@ -1,4 +1,6 @@
-# mytravels
+<img src="docs/screenshot.png" alt="screenshot" width="250" align="right">
+
+# Minhas viagens
 
 Aplicativo minhas viagens.
 
