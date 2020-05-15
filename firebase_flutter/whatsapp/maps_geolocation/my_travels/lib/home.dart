@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mytravels/configs/main_configs.dart';
+import 'package:mytravels/map_screen.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -13,7 +14,9 @@ class _HomeState extends State<Home> {
 
   _removeTravel() {}
 
-  _adicionarLocal() {}
+  _adicionarLocal() {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => MapScreen()));
+  }
 
   @override
   Widget build(BuildContext context) {
