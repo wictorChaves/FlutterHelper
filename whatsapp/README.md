@@ -8,7 +8,7 @@ Criando uma aplicação similar ao Whatsapp.
 
  - [Adicionar o Firebase a seu app Flutter](https://firebase.google.com/docs/flutter/setup)
  - [FlutterFire](https://github.com/FirebaseExtended/flutterfire)
- - [Evitar o limite de 64 K](docs/limits64.md)
+ - [Evitar o limite de 64 K](../firebase_flutter/docs/limits64.md)
 
 ## Pacotes
 
