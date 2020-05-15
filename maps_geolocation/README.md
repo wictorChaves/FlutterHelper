@@ -1,4 +1,6 @@
-# mapsgeolocation
+<img src="docs/screenshot.png" alt="screenshot" width="250" align="right">
+
+# Mapa e geolocalização
 
 Aplicação usando mapa e geolocalização.
 
