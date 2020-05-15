@@ -18,6 +18,7 @@ Pequenos projetos para ajudar no desenvolvimento.
  - [Frases do dia](frases_do_dia)
  - [Jokenpo](jokenpo)
  - [Aprenda Inglês](learning_english)
+ - [Mapa e geolocalização](maps_geolocation)
  - [Mini Player](mini_player)
  - [Bloco de notas](notes)
  - [Player de vídeo](play_video)
