@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:uber/screens/home.dart';
+import 'package:uber/screens/home/home.dart';
 
 import 'configs/main_config.dart';
 
