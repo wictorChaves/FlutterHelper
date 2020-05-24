@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/alcool_gasolina/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/alcool_gasolina/build" />
+      <excludeFolder url="file://$MODULE_DIR$/annotations/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/annotations/build" />
+      <excludeFolder url="file://$MODULE_DIR$/atm_consultoria/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/atm_consultoria/build" />
+      <excludeFolder url="file://$MODULE_DIR$/bitcoin_price/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/bitcoin_price/build" />
+      <excludeFolder url="file://$MODULE_DIR$/cara_coroa/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/cara_coroa/build" />
+      <excludeFolder url="file://$MODULE_DIR$/firebase_flutter/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/firebase_flutter/build" />
+      <excludeFolder url="file://$MODULE_DIR$/firebase_flutter/whatsapp/maps_geolocation/my_travels/uber/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/firebase_flutter/whatsapp/maps_geolocation/my_travels/uber/build" />
+      <excludeFolder url="file://$MODULE_DIR$/formulario/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/formulario/build" />
+      <excludeFolder url="file://$MODULE_DIR$/frases_do_dia/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/frases_do_dia/build" />
+      <excludeFolder url="file://$MODULE_DIR$/jokenpo/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/jokenpo/build" />
+      <excludeFolder url="file://$MODULE_DIR$/learning_english/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/learning_english/build" />
+      <excludeFolder url="file://$MODULE_DIR$/maps_geolocation/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/maps_geolocation/build" />
+      <excludeFolder url="file://$MODULE_DIR$/mini_player/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/mini_player/build" />
+      <excludeFolder url="file://$MODULE_DIR$/my_travels/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/my_travels/build" />
+      <excludeFolder url="file://$MODULE_DIR$/notes/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/notes/build" />
+      <excludeFolder url="file://$MODULE_DIR$/play_video/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/play_video/build" />
+      <excludeFolder url="file://$MODULE_DIR$/router/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/router/build" />
+      <excludeFolder url="file://$MODULE_DIR$/task_list/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/task_list/build" />
+      <excludeFolder url="file://$MODULE_DIR$/whatsapp/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/whatsapp/build" />
+      <excludeFolder url="file://$MODULE_DIR$/youtube/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/youtube/build" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
