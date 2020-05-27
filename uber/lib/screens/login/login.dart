@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:uber/component/button_component.dart';
 import 'package:uber/component/dialog_helper.dart';
 import 'package:uber/component/input_component.dart';
-import 'package:uber/screens/home/validate/home_validate.dart';
+import 'package:uber/screens/login/validate/login_validate.dart';
+import 'package:uber/screens/register/register.dart';
 
-class Home extends StatefulWidget {
+class Login extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _LoginState createState() => _LoginState();
 }
 
-class _HomeState extends State<Home> {
+class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
-  HomeValidate _homeValidate;
+  LoginValidate _loginValidate;
 
-  _HomeState() {
-    _homeValidate = HomeValidate();
+  _LoginState() {
+    _loginValidate = LoginValidate();
   }
 
   _btnSubmit() {
@@ -24,7 +25,10 @@ class _HomeState extends State<Home> {
     }
   }
 
-  _register() {}
+  _register() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => Register()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,16 +50,15 @@ class _HomeState extends State<Home> {
                           child: Image.asset("assets/images/logo.png",
                               width: 150, height: 150)),
                       InputComponent.Login(
-                          hintText: 'E-mail', validator: _homeValidate.Email),
+                          hintText: 'E-mail', validator: _loginValidate.Email),
                       InputComponent.Login(
                           hintText: 'Senha',
                           obscureText: true,
-                          validator: _homeValidate.Password),
+                          validator: _loginValidate.Password),
                       Padding(
-                        padding: EdgeInsets.only(top: 10, bottom: 10),
-                        child: ButtonComponent.Login(
-                            text: "Entrar", onPressed: _btnSubmit)
-                      ),
+                          padding: EdgeInsets.only(top: 10, bottom: 10),
+                          child: ButtonComponent.Login(
+                              text: "Entrar", onPressed: _btnSubmit)),
                       GestureDetector(
                           child: Center(
                               child: Text("Não tem conta? Cadastra-se!",
