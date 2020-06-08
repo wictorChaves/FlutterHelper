@@ -5,9 +5,11 @@ class InputComponent {
   static Widget Login(
       {String hintText,
       FormFieldValidator<String> validator,
-      obscureText = false}) {
+      obscureText = false,
+      TextEditingController controller}) {
     return TextFormField(
         obscureText: obscureText,
+        controller: controller,
         decoration: InputDecoration(
             hintText: hintText,
             filled: true,

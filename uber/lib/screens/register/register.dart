@@ -1,8 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:uber/component/button_component.dart';
 import 'package:uber/component/dialog_helper.dart';
 import 'package:uber/component/input_component.dart';
+import 'package:uber/core/services/auth_service.dart';
 import 'package:uber/screens/register/validate/register_validate.dart';
+import 'package:uber/services/model/user_model.dart';
+import 'package:uber/services/user_service.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -11,17 +15,32 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
-  RegisterValidate _registerValidate;
-  bool _driver = false;
+
+  AuthService _authService = AuthService();
+  RegisterValidate _registerValidate = RegisterValidate();
+  UserService _userService = UserService();
+
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  bool _isDriver = false;
 
   _RegisterState() {
-    _registerValidate = RegisterValidate();
   }
 
   _btnSubmit() {
     print("form:" + _formKey.currentState.validate().toString());
     if (_formKey.currentState.validate()) {
-      DialogHelper.simple(context, "title", "content");
+      _authService.Create(_emailController.text, _passwordController.text)
+          .then((AuthResult authResult) {
+        _userService.CreateOrUpdate(UserModel(authResult.user.uid, _nameController.text,
+                _emailController.text, _isDriver))
+            .then((_) {
+          Navigator.pushReplacementNamed(
+              context, _isDriver ? "/painel-motorista" : "/painel-passageiro");
+        });
+      });
     }
   }
 
@@ -44,25 +63,28 @@ class _RegisterState extends State<Register> {
                           padding: EdgeInsets.only(bottom: 5),
                           child: InputComponent.Login(
                               hintText: 'Nome Completo',
+                              controller: _nameController,
                               validator: _registerValidate.Text)),
                       Padding(
                           padding: EdgeInsets.only(bottom: 5),
                           child: InputComponent.Login(
                               hintText: 'E-mail',
+                              controller: _emailController,
                               validator: _registerValidate.Email)),
                       Padding(
                           padding: EdgeInsets.only(bottom: 5),
                           child: InputComponent.Login(
                               hintText: 'Senha',
+                              controller: _passwordController,
                               obscureText: true,
                               validator: _registerValidate.Password)),
                       SwitchListTile(
-                        value: _driver,
+                        value: _isDriver,
                         title: Text("Motorista"),
                         subtitle: Text("Marque se deseja ser um motorista."),
                         onChanged: (value) {
                           setState(() {
-                            _driver = value;
+                            _isDriver = value;
                           });
                         },
                       ),

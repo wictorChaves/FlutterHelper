@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:uber/component/button_component.dart';
 import 'package:uber/component/dialog_helper.dart';
 import 'package:uber/component/input_component.dart';
+import 'package:uber/core/services/auth_service.dart';
 import 'package:uber/screens/login/validate/login_validate.dart';
 import 'package:uber/screens/register/register.dart';
 
@@ -12,11 +13,13 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
-  LoginValidate _loginValidate;
+  AuthService _authService = AuthService();
+  LoginValidate _loginValidate = LoginValidate();
 
-  _LoginState() {
-    _loginValidate = LoginValidate();
-  }
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  _LoginState() {}
 
   _btnSubmit() {
     print("form:" + _formKey.currentState.validate().toString());
@@ -26,8 +29,7 @@ class _LoginState extends State<Login> {
   }
 
   _register() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => Register()));
+    Navigator.pushNamed(context, "/cadastro");
   }
 
   @override
