@@ -1,10 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:uber/component/button_component.dart';
 import 'package:uber/component/dialog_helper.dart';
 import 'package:uber/component/input_component.dart';
 import 'package:uber/core/services/auth_service.dart';
 import 'package:uber/screens/login/validate/login_validate.dart';
-import 'package:uber/screens/register/register.dart';
+import 'package:uber/services/model/user_model.dart';
+import 'package:uber/services/user_service.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -15,21 +17,47 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   AuthService _authService = AuthService();
   LoginValidate _loginValidate = LoginValidate();
+  UserService _userService = UserService();
 
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  _LoginState() {}
+  _LoginState() {
+    _emailController.text = "teste@teste.com";
+    _passwordController.text = "123456";
+  }
 
   _btnSubmit() {
-    print("form:" + _formKey.currentState.validate().toString());
     if (_formKey.currentState.validate()) {
-      DialogHelper.simple(context, "title", "content");
+      _authService.Login(_emailController.text, _passwordController.text)
+          .then((AuthResult authResult) {
+        _redirectByUser(authResult.user);
+      });
     }
   }
 
   _register() {
     Navigator.pushNamed(context, "/cadastro");
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkLogged();
+  }
+
+  Future<void> _checkLogged() async {
+    var currentUser = await _authService.GetCurrentUser();
+    if (currentUser != null) {
+      _redirectByUser(currentUser);
+    }
+  }
+
+  _redirectByUser(FirebaseUser user) {
+    _userService.GetById(user.uid).then((UserModel userModel) {
+      Navigator.pushReplacementNamed(context,
+          userModel.isDriver ? "/painel-motorista" : "/painel-passageiro");
+    });
   }
 
   @override
@@ -52,8 +80,11 @@ class _LoginState extends State<Login> {
                           child: Image.asset("assets/images/logo.png",
                               width: 150, height: 150)),
                       InputComponent.Login(
-                          hintText: 'E-mail', validator: _loginValidate.Email),
+                          controller: _emailController,
+                          hintText: 'E-mail',
+                          validator: _loginValidate.Email),
                       InputComponent.Login(
+                          controller: _passwordController,
                           hintText: 'Senha',
                           obscureText: true,
                           validator: _loginValidate.Password),
