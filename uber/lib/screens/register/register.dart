@@ -7,6 +7,7 @@ import 'package:uber/core/services/auth_service.dart';
 import 'package:uber/screens/register/validate/register_validate.dart';
 import 'package:uber/services/model/user_model.dart';
 import 'package:uber/services/user_service.dart';
+import 'package:uber/store/store.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -26,17 +27,14 @@ class _RegisterState extends State<Register> {
 
   bool _isDriver = false;
 
-  _RegisterState() {
-  }
-
   _btnSubmit() {
-    print("form:" + _formKey.currentState.validate().toString());
     if (_formKey.currentState.validate()) {
       _authService.Create(_emailController.text, _passwordController.text)
           .then((AuthResult authResult) {
-        _userService.CreateOrUpdate(UserModel(authResult.user.uid, _nameController.text,
-                _emailController.text, _isDriver))
-            .then((_) {
+        UserModel userModel = UserModel(authResult.user.uid,
+            _nameController.text, _emailController.text, _isDriver);
+        _userService.CreateOrUpdate(userModel).then((_) {
+          Store.userModel = userModel;
           Navigator.pushReplacementNamed(
               context, _isDriver ? "/painel-motorista" : "/painel-passageiro");
         });

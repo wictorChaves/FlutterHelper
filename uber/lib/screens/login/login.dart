@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:uber/component/button_component.dart';
-import 'package:uber/component/dialog_helper.dart';
 import 'package:uber/component/input_component.dart';
 import 'package:uber/core/services/auth_service.dart';
 import 'package:uber/screens/login/validate/login_validate.dart';
 import 'package:uber/services/model/user_model.dart';
 import 'package:uber/services/user_service.dart';
+import 'package:uber/store/store.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -55,6 +55,7 @@ class _LoginState extends State<Login> {
 
   _redirectByUser(FirebaseUser user) {
     _userService.GetById(user.uid).then((UserModel userModel) {
+      Store.userModel = userModel;
       Navigator.pushReplacementNamed(context,
           userModel.isDriver ? "/painel-motorista" : "/painel-passageiro");
     });
