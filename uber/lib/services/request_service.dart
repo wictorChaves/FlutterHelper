@@ -1,6 +1,5 @@
 import '../core/services/base_service.dart';
 import 'model/request_model.dart';
-import 'model/user_model.dart';
 
 class RequestService extends BaseService<RequestModel> {
 

@@ -141,7 +141,9 @@ class AddressModel implements IModel {
     _name = value;
   }
 
-  String get city => _administrativeArea;
+  String get city => _subAdministrativeArea;
+
+  String get state => _administrativeArea;
 
   set city(String value) {
     _administrativeArea = value;
@@ -164,4 +166,7 @@ class AddressModel implements IModel {
   set number(String value) {
     _subThoroughfare = value;
   }
+
+  String get addressFormatted =>
+      "${street}, ${number} - ${postalCode}\n${neighborhood}, ${city} - ${state}";
 }

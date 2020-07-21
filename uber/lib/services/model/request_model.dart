@@ -19,7 +19,7 @@ class RequestModel implements IModel {
         "destiny": _destiny.toJson(),
         "driver": (_driver == null) ? null : _driver.toJson(),
         "passanger": _passanger.toJson(),
-        "status": _status.toString(),
+        "status": enumToDescribe(_status),
       };
 
   @override
@@ -28,7 +28,7 @@ class RequestModel implements IModel {
     _destiny = AddressModel.fromJson(json["destiny"]);
     _driver = UserModel.fromJson(json["driver"]);
     _passanger = UserModel.fromJson(json["passanger"]);
-    _status = json["status"];
+    _status = describeToEnum(json["status"]);
   }
 
   RequestModel(

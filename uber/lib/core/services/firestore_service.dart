@@ -11,6 +11,10 @@ class FirestoreService {
     return collection.snapshots();
   }
 
+  Stream<DocumentSnapshot> ListenById(String id) {
+    return collection.document(id).snapshots();
+  }
+
   Future<List<DocumentSnapshot>> GetAllDocuments() async =>
       (await collection.getDocuments()).documents;
 

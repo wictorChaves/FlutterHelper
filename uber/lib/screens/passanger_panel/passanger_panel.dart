@@ -2,14 +2,17 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:uber/core/services/auth_service.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:uber/mapper/placemark_address.dart';
+import 'package:uber/component/dialog_helper.dart';
+import 'package:uber/mapper/placemark_address_mapper.dart';
+import 'package:uber/screens/shared/default_popup_menu.dart';
+import 'package:uber/services/active_request_service.dart';
 import 'package:uber/services/enum/status_enum.dart';
+import 'package:uber/services/geolocator_service.dart';
+import 'package:uber/services/model/active_request_model.dart';
 import 'package:uber/services/model/address_model.dart';
 import 'package:uber/services/model/request_model.dart';
 import 'package:uber/services/request_service.dart';
-import 'package:uber/services/user_service.dart';
 import 'package:uber/store/store.dart';
 
 class PassangerPanel extends StatefulWidget {
@@ -19,13 +22,15 @@ class PassangerPanel extends StatefulWidget {
 
 class _PassangerPanelState extends State<PassangerPanel> {
   Completer<GoogleMapController> _controller = Completer();
-  AuthService _authService = AuthService();
   CameraPosition _cameraPosition =
       CameraPosition(target: LatLng(-19.908138, -43.991582), zoom: 18);
   Set<Marker> _markers = {};
   TextEditingController _destinyController =
       new TextEditingController(text: "av. paulista, 807");
   RequestService _requestService = RequestService();
+  ActiveRequestService _activeRequestService = ActiveRequestService();
+  GeolocatorService _geolocatorService = GeolocatorService();
+  ActiveRequestModel _activeRequestModel = null;
 
   _setCameraPositionByPosition(Position position) {
     _showMakerPassanger(position);
@@ -36,43 +41,6 @@ class _PassangerPanelState extends State<PassangerPanel> {
     });
 
     _goToCameraPosition();
-  }
-
-  var _itemsMenu = ["Configurações", "Deslogar"];
-
-  _onSelectMenuItem(String selectedItem) {
-    switch (selectedItem) {
-      case "Configurações":
-        _config();
-        break;
-      case "Deslogar":
-        _logout();
-        break;
-    }
-  }
-
-  _config() {}
-
-  _logout() {
-    _authService.Logout();
-    Navigator.pushReplacementNamed(context, "/");
-  }
-
-  _getLastKnownPosition() async {
-    Position position = await Geolocator()
-        .getLastKnownPosition(desiredAccuracy: LocationAccuracy.high);
-    if (position != null) {
-      _setCameraPositionByPosition(position);
-    }
-  }
-
-  _listenerPosition() async {
-    await Geolocator()
-        .getPositionStream(LocationOptions(
-            accuracy: LocationAccuracy.high, distanceFilter: 10))
-        .listen((Position position) {
-      _setCameraPositionByPosition(position);
-    });
   }
 
   _showMakerPassanger(Position local) async {
@@ -93,114 +61,157 @@ class _PassangerPanelState extends State<PassangerPanel> {
     });
   }
 
-  _confirmedCallUber(contex, address) async {
-    AddressModel addressModel = PlacemarkAddress.Mapper(address);
-    RequestModel requestModel = RequestModel.newItem(
-        addressModel, null, Store.userModel, StatusEnum.wait);
-    await _requestService.Create(requestModel);
-    Navigator.pop(contex);
+  _callUber() async {
+    String destiny = _destinyController.text;
+    Placemark placemark =
+        await _geolocatorService.getFirstByDescription(destiny);
+
+    if (placemark != null) {
+      AddressModel addressModel = PlacemarkAddressMapper.Mapper(placemark);
+      DialogHelper.yesNo(
+          context,
+          "Confirmação do endereço",
+          addressModel.addressFormatted,
+          () => _confirmedCallUber(addressModel));
+    } else {
+      DialogHelper.simple(context, "Ooops!", "Endereço não encontrado!");
+    }
   }
 
-  _callUber() async {
+  _cancelUber() async {
+    DialogHelper.yesNo(
+        context,
+        "Cancelar",
+        "Deseja cancelar a corrida?",
+        () => _activeRequestService.UpdateProperty(_activeRequestModel,
+            {'status': enumToDescribe(StatusEnum.FINISHED)}));
+  }
 
-    String destiny = _destinyController.text;
+  _confirmedCallUber(AddressModel address) async {
+    RequestModel requestModel =
+        RequestModel.newItem(address, null, Store.userModel, StatusEnum.WAIT);
+    var uid = await _requestService.Create(requestModel);
+    _activeRequestService.CreateOrUpdate(
+        ActiveRequestModel(Store.userModel.uid, uid, StatusEnum.WAIT));
+  }
 
-    if (destiny.isNotEmpty) {
-
-      List<Placemark> addressList =
-          await Geolocator().placemarkFromAddress(destiny);
-      
-      if (addressList != null && addressList.length > 0) {
-        Placemark address = addressList[0];
-
-        String addressFormatted;
-        addressFormatted = "\n Cidade: " + address.administrativeArea;
-        addressFormatted +=
-            "\n Rua: " + address.thoroughfare + ", " + address.subThoroughfare;
-        addressFormatted += "\n Bairro: " + address.subLocality;
-        addressFormatted += "\n Cep: " + address.postalCode;
-
-        showDialog(
-            context: context,
-            builder: (contex) {
-              return AlertDialog(
-                  title: Text("Confirmação do endereço"),
-                  content: Text(addressFormatted),
-                  contentPadding: EdgeInsets.all(16),
-                  actions: <Widget>[
-                    FlatButton(
-                        child: Text(
-                          "Cancelar",
-                          style: TextStyle(color: Colors.red),
-                        ),
-                        onPressed: () => Navigator.pop(contex)),
-                    FlatButton(
-                        child: Text("Confirmar",
-                            style: TextStyle(color: Colors.green)),
-                        onPressed: () => _confirmedCallUber(contex, address))
-                  ]);
-            });
-      }
-    }
+  _getActiveRequest() async {
+    _activeRequestService.ListenById(Store.userModel.uid).listen((event) {
+      setState(() {
+        _activeRequestModel = (event.data == null)
+            ? null
+            : ActiveRequestModel.fromJson(event.data);
+      });
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    _getLastKnownPosition();
-    _listenerPosition();
+    _geolocatorService
+        .setLastKnownPositionAndlistener(_setCameraPositionByPosition);
+    _getActiveRequest();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Passageiro"), actions: [
-          PopupMenuButton(
-              onSelected: _onSelectMenuItem,
-              itemBuilder: (context) {
-                return _itemsMenu.map((String item) {
-                  return PopupMenuItem(value: item, child: Text(item));
-                }).toList();
-              })
-        ]),
+        appBar:
+            AppBar(title: Text("Passageiro"), actions: [DefaultPopupMenu()]),
         body: Container(
             child: Stack(children: [
           GoogleMap(
               mapType: MapType.hybrid,
               initialCameraPosition: _cameraPosition,
+              markers: _markers,
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
-              },
-              markers: _markers),
-          _textFieldPositioned(_textField(
-              hintText: "Meu local",
-              icon: Icons.location_on,
-              iconColor: Colors.green,
-              readOnly: true)),
-          _textFieldPositioned(
-              _textField(
-                  controller: _destinyController,
-                  hintText: "Digite o destino",
-                  icon: Icons.local_taxi,
-                  iconColor: Colors.black),
-              top: 55.0),
-          Positioned(
-              right: 0,
-              left: 0,
-              bottom: 0,
-              child: Padding(
-                  padding: Platform.isIOS
-                      ? EdgeInsets.fromLTRB(20, 10, 20, 25)
-                      : EdgeInsets.all(10),
-                  child: RaisedButton(
-                      child: Text(
-                        "Chamar Uber",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                      color: Color(0xff1ebbd8),
-                      padding: EdgeInsets.fromLTRB(32, 16, 32, 16),
-                      onPressed: _callUber)))
+              }),
+          ..._view()
         ])));
+  }
+
+  List<Widget> _view() {
+    if (_activeRequestModel == null) {
+      return _callUberView();
+    }
+    switch (_activeRequestModel.status) {
+      case StatusEnum.WAIT:
+        return _waitUberView();
+      case StatusEnum.ON_MY_WAY:
+        return _onMyWayUberView();
+      case StatusEnum.TRAVELING:
+        return _travelingUberView();
+      case StatusEnum.FINISHED:
+        return _callUberView();
+    }
+    return _callUberView();
+  }
+
+  List<Widget> _callUberView() {
+    return [
+      _textFieldPositioned(_textField(
+          hintText: "Meu local",
+          icon: Icons.location_on,
+          iconColor: Colors.green,
+          readOnly: true)),
+      _textFieldPositioned(
+          _textField(
+              controller: _destinyController,
+              hintText: "Digite o destino",
+              icon: Icons.local_taxi,
+              iconColor: Colors.black),
+          top: 55.0),
+      Positioned(
+          right: 0,
+          left: 0,
+          bottom: 0,
+          child: Padding(
+              padding: Platform.isIOS
+                  ? EdgeInsets.fromLTRB(20, 10, 20, 25)
+                  : EdgeInsets.all(10),
+              child: RaisedButton(
+                  child: Text(
+                    "Chamar Uber",
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                  color: Color(0xff1ebbd8),
+                  padding: EdgeInsets.fromLTRB(32, 16, 32, 16),
+                  onPressed: _callUber)))
+    ];
+  }
+
+  List<Widget> _waitUberView() {
+    return [
+      Positioned(
+          right: 0,
+          left: 0,
+          bottom: 0,
+          child: Padding(
+              padding: Platform.isIOS
+                  ? EdgeInsets.fromLTRB(20, 10, 20, 25)
+                  : EdgeInsets.all(10),
+              child: RaisedButton(
+                  child: Text(
+                    "Cancelar",
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                  color: Colors.red,
+                  padding: EdgeInsets.fromLTRB(32, 16, 32, 16),
+                  onPressed: _cancelUber)))
+    ];
+  }
+
+  List<Widget> _onMyWayUberView() {
+    return [];
+  }
+
+  List<Widget> _travelingUberView() {
+    return [];
+  }
+
+  List<Widget> _finishedUberView() {
+    return [];
   }
 
   Widget _textField(
