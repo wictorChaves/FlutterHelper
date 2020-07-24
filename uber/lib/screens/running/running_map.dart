@@ -3,8 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:uber/mapper/position_lat_lng_mapper.dart';
+import 'package:uber/screens/running/running_camera_update.dart';
 import 'package:uber/services/geolocator_service.dart';
 import 'package:uber/services/model/request_model.dart';
+import 'package:uber/services/request_service.dart';
 
 class RunningMap extends StatefulWidget {
   RequestModel requestModel;
@@ -16,81 +19,68 @@ class RunningMap extends StatefulWidget {
 }
 
 class _RunningMapState extends State<RunningMap> {
-  CameraPosition _cameraPosition =
-      CameraPosition(target: LatLng(-19.908138, -43.991582), zoom: 18);
   Set<Marker> _markers = {};
   Completer<GoogleMapController> _controller = Completer();
   GeolocatorService _geolocatorService = GeolocatorService();
+  RequestService _requestService = RequestService();
 
-  setCameraPositionByPosition(Position position) {
-    _showMakerDriver(position);
-    _showMakerPassanger();
-
-    setState(() {
-      _cameraPosition = CameraPosition(
-          target: LatLng(position.latitude, position.longitude), zoom: 18);
-    });
-
-    _goToCameraPosition();
+  _listenerPosition(Position position) {
+    _updateDBPosition(position);
   }
 
-  _showMakerDriver(Position local) async {
-    _showMaker(local, "motorista");
-  }
-
-  _showMakerPassanger() async {
-    final List<double> position = widget.requestModel.destiny.position
-        .split(",")
-        .map((e) => double.parse(e))
-        .toList();
-
-    Position local = Position(
-      latitude: position[0],
-      longitude: position[1],
-    );
-
-    _showMaker(local, "passageiro");
-  }
-
-  _showMaker(Position local, String type) {
-    _loadImages(type).then((image) {
-      setState(() {
-        _markers.add(_customMaker(local, image, type));
-      });
-    });
-  }
-
-  Future<void> _goToCameraPosition() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
-  }
-
-  _setMarkers() async {
-    _geolocatorService
-        .setLastKnownPositionAndlistener(setCameraPositionByPosition);
+  _updateDBPosition(Position position) {
+    if (widget.requestModel.driver != null) {
+      widget.requestModel.driver.fromPosition = position;
+      _requestService.CreateOrUpdate(widget.requestModel);
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    _setMarkers();
+    _geolocatorService.setLastKnownPositionAndlistener(_listenerPosition);
+    _requestService.ListenById(widget.requestModel.uid).listen((data) {
+      RequestModel requestModel = RequestModel.fromJson(data.data);
+      widget.requestModel = requestModel;
+      if (requestModel.driver != null)
+        _showMaker(requestModel.driver.positionToPosition, "motorista");
+      _showMaker(requestModel.passanger.positionToPosition, "passageiro");
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return GoogleMap(
-        mapType: MapType.hybrid,
-        initialCameraPosition: _cameraPosition,
+        mapType: MapType.normal,
+        initialCameraPosition:
+            CameraPosition(target: LatLng(-19.908138, -43.991582), zoom: 18),
         markers: _markers,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         });
   }
 
-  Marker _customMaker(Position local, BitmapDescriptor image, String type) {
+  _showMaker(Position position, String type) {
+    _loadImages(type).then((image) {
+      setState(() {
+        _markers.add(_customMaker(position, image, type));
+      });
+      _goToCameraPosition();
+    });
+  }
+
+  Future<void> _goToCameraPosition() async {
+    final GoogleMapController controller = await _controller.future;
+    CameraUpdate cameraUpdate = RunningCameraUpdate.GetCameraUpdate(widget.requestModel);
+    if (cameraUpdate != null) {
+      controller.animateCamera(cameraUpdate);
+    }
+  }
+
+  Marker _customMaker(Position position, BitmapDescriptor image, String type) {
     return Marker(
         markerId: MarkerId("marker-$type"),
-        position: LatLng(local.latitude, local.longitude),
+        position: PositionLatLngMapper.ToLatLng(position),
         infoWindow: InfoWindow(title: type),
         icon: image);
   }

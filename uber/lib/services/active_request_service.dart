@@ -37,29 +37,28 @@ class ActiveRequestService extends BaseService<ActiveRequestModel> {
   }
 
   Future<dynamic> AcceptRunning(RequestModel requestModel) async {
-    SetStatus(requestModel.passanger.uid, StatusEnum.ON_MY_WAY);
-
-    CreateOrUpdate(ActiveRequestModel.fromJson({
-      "uid": Store.userModel.uid,
-      "uid_request": requestModel.uid,
-      "status": enumToDescribe(StatusEnum.ON_MY_WAY)
-    }));
-
-    requestModel.status = StatusEnum.ON_MY_WAY;
-    requestModel.driver = Store.userModel;
-    _requestService.CreateOrUpdate(requestModel);
+    ChangeStatusDriver(requestModel, StatusEnum.ON_MY_WAY);
   }
 
   Future<dynamic> CancelRunning(RequestModel requestModel) async {
-    SetStatus(requestModel.passanger.uid, StatusEnum.WAIT);
+    ChangeStatusDriver(requestModel, StatusEnum.WAIT);
+  }
+
+  Future<dynamic> TrevilingRunning(RequestModel requestModel) async {
+    ChangeStatusDriver(requestModel, StatusEnum.TRAVELING);
+  }
+
+  Future<dynamic> ChangeStatusDriver(
+      RequestModel requestModel, StatusEnum status) async {
+    SetStatus(requestModel.passanger.uid, status);
 
     CreateOrUpdate(ActiveRequestModel.fromJson({
       "uid": Store.userModel.uid,
       "uid_request": requestModel.uid,
-      "status": enumToDescribe(StatusEnum.WAIT)
+      "status": enumToDescribe(status)
     }));
 
-    requestModel.status = StatusEnum.WAIT;
+    requestModel.status = status;
     requestModel.driver = null;
     _requestService.CreateOrUpdate(requestModel);
   }

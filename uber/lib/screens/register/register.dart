@@ -32,7 +32,7 @@ class _RegisterState extends State<Register> {
       _authService.Create(_emailController.text, _passwordController.text)
           .then((AuthResult authResult) {
         UserModel userModel = UserModel(authResult.user.uid,
-            _nameController.text, _emailController.text, _isDriver);
+            _nameController.text, _emailController.text, _isDriver, null);
         _userService.CreateOrUpdate(userModel).then((_) {
           Store.userModel = userModel;
           Navigator.pushReplacementNamed(

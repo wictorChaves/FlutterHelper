@@ -1,3 +1,4 @@
+import 'package:geolocator/geolocator.dart';
 import 'package:uber/core/services/model/imodel.dart';
 
 class AddressModel implements IModel {
@@ -169,4 +170,11 @@ class AddressModel implements IModel {
 
   String get addressFormatted =>
       "${street}, ${number} - ${postalCode}\n${neighborhood}, ${city} - ${state}";
+
+  Position get positionToPosition {
+    final List<double> positionList =
+        position.split(",").map((e) => double.parse(e)).toList();
+
+    return Position(latitude: positionList[0], longitude: positionList[1]);
+  }
 }

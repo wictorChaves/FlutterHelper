@@ -20,10 +20,10 @@ class RunningOnMyWay extends StatefulWidget {
 class _RunningOnMyWayState extends State<RunningOnMyWay> {
   ActiveRequestService _activeRequestService = ActiveRequestService();
 
-  _cancelUber() async {
-    DialogHelper.yesNo(context, "Cancelar", "Deseja cancelar a corrida?",
+  _getPassager() async {
+    DialogHelper.yesNo(context, "Viajar", "Você está com o passageiro?",
         () async {
-      await _activeRequestService.CancelRunning(widget.requestModel);
+      await _activeRequestService.TrevilingRunning(widget.requestModel);
     });
   }
 
@@ -40,12 +40,12 @@ class _RunningOnMyWayState extends State<RunningOnMyWay> {
                   : EdgeInsets.all(10),
               child: RaisedButton(
                   child: Text(
-                    "A caminho do passageiro",
+                    "Pegar passageiro",
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
-                  color: Colors.red,
+                  color: Color(0xff1ebbd8),
                   padding: EdgeInsets.fromLTRB(32, 16, 32, 16),
-                  onPressed: _cancelUber)))
+                  onPressed: _getPassager)))
     ]);
   }
 }

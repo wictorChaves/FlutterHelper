@@ -23,7 +23,7 @@ class _PassangerPanelState extends State<PassangerPanel> {
   ActiveRequestService _activeRequestService = ActiveRequestService();
   ActiveRequestModel _activeRequestModel = null;
 
-  _getActiveRequest() async {
+  _listenActiveRequest() async {
     _activeRequestService.ListenById(Store.userModel.uid).listen((event) {
       setState(() {
         _activeRequestModel = (event.data == null)
@@ -36,7 +36,7 @@ class _PassangerPanelState extends State<PassangerPanel> {
   @override
   void initState() {
     super.initState();
-    _getActiveRequest();
+    _listenActiveRequest();
   }
 
   @override
