@@ -5,21 +5,25 @@ import 'package:uber/component/dialog_helper.dart';
 import 'package:uber/services/active_request_service.dart';
 import 'package:uber/services/enum/status_enum.dart';
 import 'package:uber/services/model/active_request_model.dart';
+import 'package:uber/services/model/request_model.dart';
 import 'package:uber/store/store.dart';
 
-class WaitUber extends StatefulWidget {
+class RunningAccept extends StatefulWidget {
+  RequestModel requestModel;
+
+  RunningAccept(this.requestModel);
+
   @override
-  _WaitUberState createState() => _WaitUberState();
+  _RunningAcceptState createState() => _RunningAcceptState();
 }
 
-class _WaitUberState extends State<WaitUber> {
+class _RunningAcceptState extends State<RunningAccept> {
   ActiveRequestService _activeRequestService = ActiveRequestService();
 
   _cancelUber() async {
-    DialogHelper.yesNo(context, "Cancelar", "Deseja cancelar a corrida?",
+    DialogHelper.yesNo(context, "Aceitar", "Deseja aceitar a corrida?",
         () async {
-      await _activeRequestService.SetStatus(
-          Store.userModel.uid, StatusEnum.CANCELED);
+      await _activeRequestService.AcceptRunning(widget.requestModel);
     });
   }
 
@@ -36,10 +40,10 @@ class _WaitUberState extends State<WaitUber> {
                   : EdgeInsets.all(10),
               child: RaisedButton(
                   child: Text(
-                    "Cancelar",
+                    "Aceitar corrida",
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
-                  color: Colors.red,
+                  color: Color(0xff1ebbd8),
                   padding: EdgeInsets.fromLTRB(32, 16, 32, 16),
                   onPressed: _cancelUber)))
     ]);

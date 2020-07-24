@@ -2,6 +2,10 @@
 
 Aplicação similar ao Uber.
 
+# Itens
+
+ - Core para o firebase
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

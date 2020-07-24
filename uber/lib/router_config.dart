@@ -3,6 +3,7 @@ import 'package:uber/screens/driver_panel/driver_panel.dart';
 import 'package:uber/screens/login/login.dart';
 import 'package:uber/screens/passanger_panel/passanger_panel.dart';
 import 'package:uber/screens/register/register.dart';
+import 'package:uber/screens/running/running.dart';
 
 class RouterConfig {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -15,6 +16,8 @@ class RouterConfig {
         return MaterialPageRoute(builder: (_) => DriverPanel());
       case "/painel-passageiro":
         return MaterialPageRoute(builder: (_) => PassangerPanel());
+      case "/corrida":
+        return MaterialPageRoute(builder: (_) => Running(settings.arguments));
       default:
         _errorRoute();
     }

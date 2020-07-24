@@ -21,8 +21,11 @@ class FirestoreService {
   Future<DocumentSnapshot> GetDocumentById(String id) =>
       collection.document(id).get();
 
-  Future<DocumentReference> CreateDocument(Map<String, dynamic> json) =>
-      collection.add(json);
+  Future<String> CreateDocument(Map<String, dynamic> json) async {
+    json["uid"] = collection.document().documentID;
+    await CreateOrUpdateDocument(json["uid"], json);
+    return json["uid"];
+  }
 
   Future<void> CreateOrUpdateDocument(String id, Map<String, dynamic> json) =>
       collection.document(id).setData(json);

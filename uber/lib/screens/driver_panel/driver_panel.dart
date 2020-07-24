@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:uber/core/services/auth_service.dart';
+import 'package:uber/screens/driver_panel/list_request.dart';
+import 'package:uber/screens/shared/default_popup_menu.dart';
+import 'package:uber/services/active_request_service.dart';
+import 'package:uber/services/enum/status_enum.dart';
+import 'package:uber/services/model/active_request_model.dart';
+import 'package:uber/services/model/request_model.dart';
+import 'package:uber/services/request_service.dart';
+import 'package:uber/store/store.dart';
 
 class DriverPanel extends StatefulWidget {
   @override
@@ -7,45 +14,32 @@ class DriverPanel extends StatefulWidget {
 }
 
 class _DriverPanelState extends State<DriverPanel> {
-  AuthService _authService = AuthService();
+  RequestService _requestService = RequestService();
+  ActiveRequestService _activeRequestService = ActiveRequestService();
 
-  var _itemsMenu = ["Configurações", "Deslogar"];
-
-  _onSelectMenuItem(String selectedItem) {
-    switch (selectedItem) {
-      case "Configurações":
-        _config();
-        break;
-      case "Deslogar":
-        _logout();
-        break;
+  _getActiveRequest() async {
+    ActiveRequestModel activeRequestModel =
+        await _activeRequestService.GetById(Store.userModel.uid);
+    if (activeRequestModel != null) {
+      if (activeRequestModel.status == StatusEnum.ON_MY_WAY) {
+        RequestModel requestModel =
+            await _requestService.GetById(activeRequestModel.uid_request);
+        Navigator.pushReplacementNamed(context, "/corrida",
+            arguments: requestModel);
+      }
     }
   }
 
-  _config() {}
-
-  _logout() {
-    _authService.Logout();
-    Navigator.pushReplacementNamed(context, "/");
+  @override
+  void initState() {
+    super.initState();
+    _getActiveRequest();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Motorista"), actions: [
-          PopupMenuButton(
-              onSelected: _onSelectMenuItem,
-              itemBuilder: (context) {
-                return _itemsMenu.map((String item) {
-                  return PopupMenuItem(value: item, child: Text(item));
-                }).toList();
-              })
-        ]),
-        body: Container(
-            child: RaisedButton(
-                onPressed: () {
-                  _authService.Logout();
-                },
-                child: Text("sair"))));
+        appBar: AppBar(title: Text("Motorista"), actions: [DefaultPopupMenu()]),
+        body: ListRequest());
   }
 }

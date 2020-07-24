@@ -25,9 +25,13 @@ class RequestModel implements IModel {
   @override
   RequestModel.fromJson(Map<String, dynamic> json) {
     uid = json["uid"];
-    _destiny = AddressModel.fromJson(json["destiny"]);
-    _driver = UserModel.fromJson(json["driver"]);
-    _passanger = UserModel.fromJson(json["passanger"]);
+    _destiny =
+        json["destiny"] == null ? null : AddressModel.fromJson(json["destiny"]);
+    _driver =
+        json["driver"] == null ? null : UserModel.fromJson(json["driver"]);
+    _passanger = json["passanger"] == null
+        ? null
+        : UserModel.fromJson(json["passanger"]);
     _status = describeToEnum(json["status"]);
   }
 

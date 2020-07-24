@@ -6,26 +6,26 @@ class ActiveRequestModel implements IModel {
   @override
   String uid;
 
-  String _uid_user;
+  String _uid_request;
   StatusEnum _status;
 
   @override
   Map<String, dynamic> toJson() => {
         "uid": uid,
-        "uid_user": _uid_user,
+        "uid_request": _uid_request,
         "status": enumToDescribe(_status),
       };
 
   @override
   ActiveRequestModel.fromJson(Map<String, dynamic> json) {
     uid = json["uid"];
-    _uid_user = json["uid_user"];
+    _uid_request = json["uid_request"];
     _status = describeToEnum(json["status"]);
   }
 
-  ActiveRequestModel(this.uid, this._uid_user, this._status);
+  ActiveRequestModel(this.uid, this._uid_request, this._status);
 
-  ActiveRequestModel.newItem(this._uid_user, this._status);
+  ActiveRequestModel.newItem(this._uid_request, this._status);
 
   StatusEnum get status => _status;
 
@@ -33,9 +33,9 @@ class ActiveRequestModel implements IModel {
     _status = value;
   }
 
-  String get uid_user => _uid_user;
+  String get uid_request => _uid_request;
 
-  set uid_user(String value) {
-    _uid_user = value;
+  set uid_request(String value) {
+    _uid_request = value;
   }
 }

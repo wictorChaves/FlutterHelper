@@ -22,7 +22,7 @@ class BaseService<T extends IModel> extends FirestoreService {
   }
 
   Future<String> Create(T model) async =>
-      (await CreateDocument(model.toJson())).documentID;
+      (await CreateDocument(model.toJson()));
 
   Future<dynamic> CreateOrUpdate(T model) => model.uid == null
       ? Create(model)
