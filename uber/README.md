@@ -1,3 +1,5 @@
+<img src="docs/screenshot.jpg" alt="screenshot" width="250" align="right">
+
 # uber
 
 Aplicação similar ao Uber.
