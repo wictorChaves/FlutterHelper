@@ -1,4 +1,4 @@
-<img src="docs/screenshot.png" alt="screenshot" width="250" align="right">
+<img src="docs/screenshot.jpg" alt="screenshot" width="250" align="right">
 
 # uber
 
