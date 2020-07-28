@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-enum StatusEnum { WAIT, ON_MY_WAY, TRAVELING, FINISHED, CANCELED }
+enum StatusEnum { WAIT, ON_MY_WAY, TRAVELING, FINISHED, CONFIRMED, CANCELED }
 
 describeToEnum(String discribe) {
   return StatusEnum.values.firstWhere(

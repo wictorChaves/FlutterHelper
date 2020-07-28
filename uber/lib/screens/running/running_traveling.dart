@@ -5,22 +5,22 @@ import 'package:uber/component/dialog_helper.dart';
 import 'package:uber/services/active_request_service.dart';
 import 'package:uber/services/model/request_model.dart';
 
-class RunningAccept extends StatefulWidget {
+class RunningTraveling extends StatefulWidget {
   RequestModel requestModel;
 
-  RunningAccept(this.requestModel);
+  RunningTraveling(this.requestModel);
 
   @override
-  _RunningAcceptState createState() => _RunningAcceptState();
+  _RunningTravelingState createState() => _RunningTravelingState();
 }
 
-class _RunningAcceptState extends State<RunningAccept> {
+class _RunningTravelingState extends State<RunningTraveling> {
   ActiveRequestService _activeRequestService = ActiveRequestService();
 
   _cancelUber() async {
-    DialogHelper.yesNo(context, "Aceitar", "Deseja aceitar a corrida?",
+    DialogHelper.yesNo(context, "Finalizar", "Deseja finalizar Corrida?",
         () async {
-      await _activeRequestService.AcceptRunning(widget.requestModel);
+      await _activeRequestService.FinishedRunning(widget.requestModel);
     });
   }
 
@@ -37,7 +37,7 @@ class _RunningAcceptState extends State<RunningAccept> {
                   : EdgeInsets.all(10),
               child: RaisedButton(
                   child: Text(
-                    "Aceitar corrida",
+                    "Finalizar Corrida",
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                   color: Color(0xff1ebbd8),

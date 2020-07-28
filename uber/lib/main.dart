@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:uber/router_config.dart';
-import 'package:uber/screens/login/login.dart';
-import 'package:uber/screens/register/register.dart';
 
 import 'configs/main_config.dart';
 

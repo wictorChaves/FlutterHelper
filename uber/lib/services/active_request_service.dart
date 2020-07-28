@@ -36,6 +36,10 @@ class ActiveRequestService extends BaseService<ActiveRequestModel> {
         .snapshots();
   }
 
+  Future<dynamic> FinishedRunning(RequestModel requestModel) async {
+    ChangeStatusDriver(requestModel, StatusEnum.CONFIRMED);
+  }
+
   Future<dynamic> AcceptRunning(RequestModel requestModel) async {
     ChangeStatusDriver(requestModel, StatusEnum.ON_MY_WAY);
   }

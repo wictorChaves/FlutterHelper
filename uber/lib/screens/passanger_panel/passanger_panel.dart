@@ -60,6 +60,8 @@ class _PassangerPanelState extends State<PassangerPanel> {
         return TravelingUber();
       case StatusEnum.FINISHED:
         return FinishedUber();
+      case StatusEnum.CONFIRMED:
+        return FinishedUber();
       case StatusEnum.CANCELED:
         return CancelUber();
     }

@@ -23,7 +23,7 @@ class _LoginState extends State<Login> {
   TextEditingController _passwordController = TextEditingController();
 
   _LoginState() {
-    bool isDriver = false;
+    bool isDriver = true;
     if (isDriver) {
       _emailController.text = "moto@teste.com";
       _passwordController.text = "123456";

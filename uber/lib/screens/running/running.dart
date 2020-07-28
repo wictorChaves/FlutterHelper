@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:uber/screens/running/running_accept.dart';
 import 'package:uber/screens/running/running_map.dart';
 import 'package:uber/screens/running/running_on_my_way.dart';
+import 'package:uber/screens/running/running_traveling.dart';
 import 'package:uber/services/active_request_service.dart';
 import 'package:uber/services/enum/status_enum.dart';
 import 'package:uber/services/model/active_request_model.dart';
@@ -18,7 +19,6 @@ class Running extends StatefulWidget {
 }
 
 class _RunningState extends State<Running> {
-
   ActiveRequestService _activeRequestService = ActiveRequestService();
   ActiveRequestModel _activeRequestModel = null;
 
@@ -41,9 +41,11 @@ class _RunningState extends State<Running> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar:
-        AppBar(title: Text("Painel corrida")),
-        body: Container(child: Stack(children: [RunningMap(widget.requestModel), _view()])));;
+        appBar: AppBar(title: Text("Painel corrida")),
+        body: Container(
+            child:
+                Stack(children: [RunningMap(widget.requestModel), _view()])));
+    ;
   }
 
   Widget _view() {
@@ -56,13 +58,14 @@ class _RunningState extends State<Running> {
       case StatusEnum.ON_MY_WAY:
         return RunningOnMyWay(widget.requestModel);
       case StatusEnum.TRAVELING:
-        return RunningAccept(widget.requestModel);
+        return RunningTraveling(widget.requestModel);
       case StatusEnum.FINISHED:
+        return RunningAccept(widget.requestModel);
+      case StatusEnum.CONFIRMED:
         return RunningAccept(widget.requestModel);
       case StatusEnum.CANCELED:
         return RunningAccept(widget.requestModel);
     }
     return RunningAccept(widget.requestModel);
   }
-
 }
