@@ -1,3 +1,5 @@
+<img src="docs/screenshot.png" alt="screenshot" width="250" align="right">
+
 # app_ishow
 
 Login com animação.
