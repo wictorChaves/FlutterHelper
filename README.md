@@ -9,6 +9,7 @@ Pequenos projetos para ajudar no desenvolvimento.
 # Projetos
 
  - [Alcool ou Gasolina](alcool_gasolina)
+ - [Animações](animations)
  - [Anotações](annotations)
  - [ATM Consultoria](atm_consultoria)
  - [Cara ou Coroa](cara_coroa)
