@@ -1,4 +1,4 @@
-<img src="docs/screenshot.png" alt="screenshot" width="250" align="right">
+<img src="docs/screenshot.0png" alt="screenshot" width="250" align="right">
 
 # app_ishow
 
