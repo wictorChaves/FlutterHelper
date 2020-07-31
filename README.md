@@ -20,6 +20,7 @@ Pequenos projetos para ajudar no desenvolvimento.
  - [Jokenpo](jokenpo)
  - [Aprenda Inglês](learning_english)
  - [Mapa e geolocalização](maps_geolocation)
+ - [Mascaras e padrões](masks_patterns)
  - [Mini Player](mini_player)
  - [Minhas viagens](my_travels)
  - [Bloco de notas](notes)
