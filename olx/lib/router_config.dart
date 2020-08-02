@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:olx/screens/adverts/adverts.dart';
 import 'package:olx/screens/login/login.dart';
+import 'package:olx/screens/my_adverts/my_adverts.dart';
+import 'package:olx/screens/new_advert/new_advert.dart';
 import 'package:olx/screens/register/register.dart';
 
 class RouterConfig {
@@ -12,6 +14,10 @@ class RouterConfig {
         return MaterialPageRoute(builder: (_) => Register());
       case "/anuncios":
         return MaterialPageRoute(builder: (_) => Adverts());
+      case "/meus-anuncios":
+        return MaterialPageRoute(builder: (_) => MyAdverts());
+      case "/novo-anuncio":
+        return MaterialPageRoute(builder: (_) => NewAdvert());
       case "/login":
         return MaterialPageRoute(builder: (_) => Login());
       default:

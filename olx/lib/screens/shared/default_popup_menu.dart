@@ -11,12 +11,10 @@ class _DefaultPopupMenuState extends State<DefaultPopupMenu> {
 
   List<String> _itemsMenu = [];
 
-  _config() {}
-
   _onSelectMenuItem(String selectedItem) {
     switch (selectedItem) {
       case "Meus anúncios":
-        _config();
+        _myAdverts();
         break;
       case "Deslogar":
         _logout();
@@ -25,6 +23,10 @@ class _DefaultPopupMenuState extends State<DefaultPopupMenu> {
         _login();
         break;
     }
+  }
+
+  _myAdverts() {
+    Navigator.pushReplacementNamed(context, "/meus-anuncios");
   }
 
   _logout() {

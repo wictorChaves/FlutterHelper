@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class InputCustom extends StatelessWidget {
   final TextEditingController controller;
@@ -7,6 +8,8 @@ class InputCustom extends StatelessWidget {
   final bool autofocus;
   final TextInputType keyboardType;
   final FormFieldValidator<String> validator;
+  final List<TextInputFormatter> inputFormatters;
+  final int maxLines;
 
   InputCustom(
       {@required this.controller,
@@ -14,7 +17,9 @@ class InputCustom extends StatelessWidget {
       this.obscureText = false,
       this.autofocus = false,
       this.keyboardType = TextInputType.text,
-      this.validator = null});
+      this.validator = null,
+      this.inputFormatters,
+      this.maxLines});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +28,9 @@ class InputCustom extends StatelessWidget {
       obscureText: this.obscureText,
       autofocus: this.autofocus,
       keyboardType: this.keyboardType,
-      validator: validator,
+      validator: this.validator,
+      inputFormatters: this.inputFormatters,
+      maxLines: this.maxLines,
       style: TextStyle(fontSize: 20),
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(32, 16, 32, 16),

@@ -15,8 +15,12 @@ dependencies:
   firebase_core: ^0.4.4+3
   cloud_firestore: ^0.13.5
   firebase_auth: ^0.16.0
+  firebase_storage: ^3.1.6
   google_maps_flutter: ^0.5.28+1
   geolocator: ^5.3.2+2
+  image_picker: ^0.6.7+4
+  brasil_fields: ^0.3.0
+  validadores: ^1.0.2
 
 dev_dependencies:
   flutter_test:
