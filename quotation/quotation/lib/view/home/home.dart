@@ -13,13 +13,15 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   QuotationService _quotationService = new QuotationService();
-  List<Quotation> _dbQuotations = [];
-  TextEditingController valueController = TextEditingController();
+  TextEditingController valueController = TextEditingController(text: '1');
+  List<Quotation> _quotations;
+
   var _values = {
     'BRL': {'USD': 0.20, 'ARS': 24.41},
     'ARS': {'USD': 0.0082, 'BRL': 0.041},
     'USD': {'BRL': 4.99, 'ARS': 121.78}
   };
+
   var _currencies = {
     'BRL': {'USD': 0.20, 'ARS': 24.41},
     'ARS': {'USD': 0.0082, 'BRL': 0.041},
@@ -32,26 +34,66 @@ class _HomeState extends State<Home> {
     loadRecords();
   }
 
-  loadRecords() {
-    _quotationService.GetAll().then((values) {
-      _dbQuotations = values == null ? [] : values;
-      setCurrencies('BRL', 'USD');
-      setCurrencies('BRL', 'ARS');
+  String selectedGroup = 'Commercial';
+  List<String> groupList = ['Commercial'];
 
-      setCurrencies('ARS', 'USD');
-      setCurrencies('ARS', 'BRL');
+  Future<void> loadRecords() async {
+    _quotations = await _quotationService.GetAll();
+    setValues();
+  }
 
-      setCurrencies('USD', 'BRL');
-      setCurrencies('USD', 'ARS');
+  setValues() {
+    setState(() {
+      setGroups();
+      loadCurrencies();
+      calculateQuotation(valueController.text);
     });
   }
 
-  setCurrencies(from, to) {
-    var dbQuotation = _dbQuotations.firstWhere(
-        (x) => x.currencyfrom == from && x.currencyto == to,
+  setGroups() {
+    groupList = _quotations.map((e) => e.currencygroup).toSet().toList();
+  }
+
+  loadCurrencies() {
+    setCurrencies('BRL', 'USD');
+    setCurrencies('BRL', 'ARS');
+
+    setCurrencies('ARS', 'USD');
+    setCurrencies('ARS', 'BRL');
+
+    setCurrencies('USD', 'BRL');
+    setCurrencies('USD', 'ARS');
+  }
+
+  setCurrencies(String from, String to) {
+    var quotation = getQuotation(from, to);
+    _currencies[from][to] = quotation == null ? 0.0 : quotation.value;
+  }
+
+  getQuotation(from, to) {
+    return _quotations.firstWhere(
+        (quotation) =>
+            quotation.currencyfrom == from &&
+            quotation.currencyto == to &&
+            quotation.currencygroup == selectedGroup,
         orElse: () => null);
-    _values[from][to] = dbQuotation == null ? 0.0 : dbQuotation.value;
-    _currencies[from][to] = dbQuotation == null ? 0.0 : dbQuotation.value;
+  }
+
+  calculateQuotation(text) {
+    var value = CurrencyHelper.toDouble(text);
+    var calcQuotation = new CalcQuotation(_currencies);
+    calcQuotation.setValue(value);
+
+    setState(() {
+      _values['BRL']['USD'] = calcQuotation.toUSD('BRL');
+      _values['BRL']['ARS'] = calcQuotation.toARS('BRL');
+
+      _values['ARS']['USD'] = calcQuotation.toUSD('ARS');
+      _values['ARS']['BRL'] = calcQuotation.toBRL('ARS');
+
+      _values['USD']['BRL'] = calcQuotation.toBRL('USD');
+      _values['USD']['ARS'] = calcQuotation.toARS('USD');
+    });
   }
 
   @override
@@ -70,8 +112,10 @@ class _HomeState extends State<Home> {
                       MaterialPageRoute(builder: (context) => Settings()),
                     ).then((value) {
                       calculateQuotation(valueController.text);
-                      loadRecords();
-                    } );
+                      setState(() {
+                        loadRecords();
+                      });
+                    });
                     break;
                 }
               },
@@ -102,6 +146,23 @@ class _HomeState extends State<Home> {
                             InputDecoration(labelText: "Entre com o valor")),
                   ),
                 ],
+              ),
+              DropdownButton<String>(
+                value: selectedGroup,
+                onChanged: (String newValue) {
+                  setState(() {
+                    selectedGroup = newValue;
+                    loadRecords().then((value) {
+                      calculateQuotation(valueController.text);
+                    });
+                  });
+                },
+                items: groupList.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
               ),
               Padding(
                 padding: EdgeInsets.only(top: 10, bottom: 0),
@@ -234,20 +295,4 @@ class _HomeState extends State<Home> {
     );
   }
 
-  calculateQuotation(text) {
-    var value = CurrencyHelper.toDouble(text);
-    var calcQuotation = new CalcQuotation(_currencies);
-    calcQuotation.setValue(value);
-
-    setState(() {
-      _values['BRL']['USD'] = calcQuotation.toUSD('BRL');
-      _values['BRL']['ARS'] = calcQuotation.toARS('BRL');
-
-      _values['ARS']['USD'] = calcQuotation.toUSD('ARS');
-      _values['ARS']['BRL'] = calcQuotation.toBRL('ARS');
-
-      _values['USD']['BRL'] = calcQuotation.toBRL('USD');
-      _values['USD']['ARS'] = calcQuotation.toARS('USD');
-    });
-  }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:quotation/helper/currency.helper.dart';
 import 'package:quotation/models/quotation.model.dart';
 import 'package:quotation/services/quotation.service.dart';
-import '../main-helper.dart';
+import 'package:quotation/view/settings/settings-form.dart';
+import '../helper.dart';
 import 'internal-configs.dart';
 
 class Settings extends StatefulWidget {
@@ -13,26 +13,8 @@ class Settings extends StatefulWidget {
 
 class _Settings extends State<Settings> {
   QuotationService _quotationService = new QuotationService();
+  SettingsForm _form = new SettingsForm();
   List<Quotation> _dbQuotations = [];
-  var _controllers = {
-    'BRL': {
-      'USD': new TextEditingController(),
-      'ARS': new TextEditingController()
-    },
-    'ARS': {
-      'USD': new TextEditingController(),
-      'BRL': new TextEditingController()
-    },
-    'USD': {
-      'BRL': new TextEditingController(),
-      'ARS': new TextEditingController()
-    }
-  };
-  var _currencies = {
-    'BRL': {'USD': 0.21, 'ARS': 24.41},
-    'ARS': {'USD': 0.0082, 'BRL': 0.041},
-    'USD': {'BRL': 4.99, 'ARS': 121.78}
-  };
 
   @override
   Future<void> initState() {
@@ -40,26 +22,47 @@ class _Settings extends State<Settings> {
     loadRecords();
   }
 
-  loadRecords() {
-    _quotationService.GetAll().then((values) {
-      _dbQuotations = values == null ? [] : values;
-      setCurrencies('BRL', 'USD');
-      setCurrencies('BRL', 'ARS');
-
-      setCurrencies('ARS', 'USD');
-      setCurrencies('ARS', 'BRL');
-
-      setCurrencies('USD', 'BRL');
-      setCurrencies('USD', 'ARS');
+  Future<void> loadRecords() async {
+    await loadDBQuotation();
+    setState(() {
+      _form.setValues(_dbQuotations);
     });
   }
 
-  setCurrencies(from, to) {
-    var dbQuotation = _dbQuotations.firstWhere(
-        (x) => x.currencyfrom == from && x.currencyto == to,
-        orElse: () => null);
-    _controllers[from][to].text =
-        dbQuotation == null ? '0' : dbQuotation.value.toString();
+  loadDBQuotation() async {
+    var values = await _quotationService.GetAll();
+    _dbQuotations = values == null ? [] : values;
+  }
+
+  Future<void> _displayTextInputDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('TextField in Dialog'),
+            content: TextField(
+              controller: _form.controllers['group'],
+              decoration: InputDecoration(hintText: "Nome da nova cotação"),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: InternalConfigs.PRIMARYCOLOR,
+                textColor: Colors.white,
+                child: Text('OK'),
+                onPressed: () {
+                  setState(() {
+                    _form.addNewQuotation().then((value) {
+                      setState(() {
+                        loadRecords();
+                      });
+                    });
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -75,6 +78,37 @@ class _Settings extends State<Settings> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              DropdownButton<String>(
+                value: _form.selectedGroup,
+                onChanged: (String newValue) {
+                  setState(() {
+                    _form.selectedGroup = newValue;
+                    loadRecords().then((value) {});
+                  });
+                },
+                items: _form.groupList
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: FlatButton(
+                  padding: EdgeInsets.all(0),
+                  color: Colors.transparent,
+                  child: Align(
+                      alignment: Alignment.topRight,
+                      child: Text("+ Adicionar contação",
+                          style:
+                              TextStyle(color: InternalConfigs.PRIMARYCOLOR))),
+                  onPressed: () {
+                    _displayTextInputDialog(context);
+                  },
+                ),
+              ),
               Padding(
                 padding: EdgeInsets.only(top: 10, bottom: 0),
                 child: Text(
@@ -98,7 +132,7 @@ class _Settings extends State<Settings> {
                   children: <Widget>[
                     Expanded(
                       child: TextField(
-                        controller: _controllers['BRL']['USD'],
+                        controller: _form.controllers['BRL-USD'],
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(labelText: ''),
@@ -106,7 +140,7 @@ class _Settings extends State<Settings> {
                     ),
                     Expanded(
                       child: TextField(
-                        controller: _controllers['BRL']['ARS'],
+                        controller: _form.controllers['BRL-ARS'],
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(labelText: ''),
@@ -138,7 +172,7 @@ class _Settings extends State<Settings> {
                   children: <Widget>[
                     Expanded(
                       child: TextField(
-                        controller: _controllers['ARS']['USD'],
+                        controller: _form.controllers['ARS-USD'],
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(labelText: ''),
@@ -146,7 +180,7 @@ class _Settings extends State<Settings> {
                     ),
                     Expanded(
                       child: TextField(
-                        controller: _controllers['ARS']['BRL'],
+                        controller: _form.controllers['ARS-BRL'],
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(labelText: ''),
@@ -178,7 +212,7 @@ class _Settings extends State<Settings> {
                   children: <Widget>[
                     Expanded(
                       child: TextField(
-                        controller: _controllers['USD']['BRL'],
+                        controller: _form.controllers['USD-BRL'],
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(labelText: ''),
@@ -186,7 +220,7 @@ class _Settings extends State<Settings> {
                     ),
                     Expanded(
                       child: TextField(
-                        controller: _controllers['USD']['ARS'],
+                        controller: _form.controllers['USD-ARS'],
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(labelText: ''),
@@ -205,8 +239,10 @@ class _Settings extends State<Settings> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () {
-                    saveCurrencies().then((value) {
-                      Helper.dialog(context, 'title', 'content');
+                    _form.saveCurrencies(_dbQuotations).then((value) {
+                      Helper.dialog(
+                          context, 'Tudo certo!', 'Nova cotação salva :)');
+                      loadRecords();
                     });
                   },
                 ),
@@ -216,34 +252,5 @@ class _Settings extends State<Settings> {
         ),
       ),
     );
-  }
-
-  Future<void> saveCurrencies() async {
-    await saveCurrency('BRL', 'USD');
-    await saveCurrency('BRL', 'ARS');
-
-    await saveCurrency('ARS', 'USD');
-    await saveCurrency('ARS', 'BRL');
-
-    await saveCurrency('USD', 'BRL');
-    await saveCurrency('USD', 'ARS');
-
-    loadRecords();
-  }
-
-  saveCurrency(from, to) async {
-    double value = CurrencyHelper.toDouble(_controllers[from][to].text);
-
-    var quotation = _dbQuotations.firstWhere(
-        (quotation) =>
-            quotation.currencyfrom == from && quotation.currencyto == to,
-        orElse: () => null);
-
-    if (quotation == null) {
-      await _quotationService.Add(new Quotation.New(from, to, value, '1'));
-    } else {
-      quotation.value = value;
-      await _quotationService.Update(quotation);
-    }
   }
 }

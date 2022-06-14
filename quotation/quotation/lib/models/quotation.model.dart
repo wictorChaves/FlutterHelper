@@ -5,9 +5,11 @@ class Quotation {
   double _value;
   String _currencygroup;
 
-  Quotation(this._id, this._currencyfrom, this._currencyto, this._value, this._currencygroup);
+  Quotation(this._id, this._currencyfrom, this._currencyto, this._value,
+      this._currencygroup);
 
-  Quotation.New(String currencyfrom, String currencyto, double value, String currencygroup) {
+  Quotation.New(String currencyfrom, String currencyto, double value,
+      String currencygroup) {
     this._currencyfrom = currencyfrom;
     this._currencyto = currencyto;
     this._value = value;
@@ -47,6 +49,18 @@ class Quotation {
         _value = json['value'],
         _currencygroup = json['currencygroup'];
 
-  Map<String, dynamic> toJson() =>
-      {'id': _id, 'currencyfrom': _currencyfrom, 'currencyto': _currencyto, 'value': _value, 'currencygroup': _currencygroup};
+  Map<String, dynamic> toJson() => {
+        'id': _id,
+        'currencyfrom': _currencyfrom,
+        'currencyto': _currencyto,
+        'value': _value,
+        'currencygroup': _currencygroup
+      };
+
+  Map<String, dynamic> toJsonWithoutId() => {
+        'currencyfrom': _currencyfrom,
+        'currencyto': _currencyto,
+        'value': _value,
+        'currencygroup': _currencygroup
+      };
 }
