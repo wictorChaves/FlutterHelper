@@ -1,8 +1,8 @@
 <img src="docs/screenshot.png" alt="screenshot" width="250" align="right">
 
-# youtube
+# Quotation
 
-Aplicação Youtube.
+Flutter application for quotation.
 
 ## Getting Started
 
