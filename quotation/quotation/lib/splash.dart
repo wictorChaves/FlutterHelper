@@ -29,6 +29,7 @@ class _SplashState extends State<Splash> {
     var askingPriceQuotations = await _askingPriceService.getAll();
     if (values.length == 0) {
       await createCommercialQuotation(askingPriceQuotations);
+      await createBlueQuotation(askingPriceQuotations);
     } else {
       await updateCommercialQuotation(askingPriceQuotations);
     }
@@ -64,6 +65,24 @@ class _SplashState extends State<Splash> {
         'USD', 'BRL', askingPriceQuotations['USD-BRL'], group));
     await _quotationService.UpdateWithoutId(new Quotation.New(
         'USD', 'ARS', askingPriceQuotations['USD-ARS'], group));
+  }
+
+  Future<void> createBlueQuotation(askingPriceQuotations) async {
+    var group = 'Blue';
+    var multiplierBlueBRLARS = 1.652173913043478;
+    var multiplierBlueUSDARS = 1.769911504424779;
+    await _quotationService.Add(new Quotation.New(
+        'BRL', 'USD', askingPriceQuotations['BRL-USD'], group));
+    await _quotationService.Add(new Quotation.New('BRL', 'ARS',
+        askingPriceQuotations['BRL-ARS'] * multiplierBlueBRLARS, group));
+    await _quotationService.Add(new Quotation.New('ARS', 'USD',
+        askingPriceQuotations['ARS-USD'] / multiplierBlueUSDARS, group));
+    await _quotationService.Add(new Quotation.New('ARS', 'BRL',
+        askingPriceQuotations['ARS-BRL'] / multiplierBlueBRLARS, group));
+    await _quotationService.Add(new Quotation.New(
+        'USD', 'BRL', askingPriceQuotations['USD-BRL'], group));
+    await _quotationService.Add(new Quotation.New('USD', 'ARS',
+        askingPriceQuotations['USD-ARS'] * multiplierBlueUSDARS, group));
   }
 
   @override
