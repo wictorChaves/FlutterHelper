@@ -21,6 +21,10 @@ class _SplashState extends State<Splash> {
       setState(() {
         shouldProceed = true;
       });
+    }).catchError((value) {
+      setState(() {
+        shouldProceed = true;
+      });
     });
   }
 
